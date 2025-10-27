@@ -1,0 +1,5 @@
+nltk
+Sastrawi
+scikit-learn
+joblib
+matplotlib
