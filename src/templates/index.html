@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Personality Detector</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f5f5f5;
+      }
+      .container {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        color: #333;
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      textarea {
+        width: 100%;
+        height: 200px;
+        padding: 15px;
+        border: 2px solid #ddd;
+        border-radius: 5px;
+        font-size: 14px;
+        resize: vertical;
+      }
+      button {
+        background: #007bff;
+        color: white;
+        padding: 12px 30px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 15px;
+      }
+      button:hover {
+        background: #0056b3;
+      }
+      .loading {
+        display: none;
+        text-align: center;
+        color: #666;
+        margin-top: 20px;
+      }
+      .results {
+        margin-top: 30px;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 5px;
+        display: none;
+      }
+      .score-item {
+        margin: 10px 0;
+        padding: 10px;
+        background: white;
+        border-radius: 5px;
+        display: flex;
+        justify-content: space-between;
+      }
+      .score-bar {
+        width: 200px;
+        height: 20px;
+        background: #e9ecef;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      .score-fill {
+        height: 100%;
+        background: #28a745;
+        transition: width 0.5s ease;
+      }
+      .dominant {
+        background: #d4edda;
+        border-left: 4px solid #28a745;
+      }
+      .interpretation {
+        margin-top: 20px;
+        padding: 15px;
+        background: #e3f2fd;
+        border-radius: 5px;
+        font-weight: bold;
+        color: #1976d2;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🧠 AI Personality Detector</h1>
+      <p>
+        Masukkan teks chat atau kalimat untuk menganalisis kepribadian
+        berdasarkan model OCEAN:
+      </p>
+
+      <div style="margin-bottom: 20px">
+        <label style="display: block; margin-bottom: 10px; font-weight: bold"
+          >Pilih Metode Input:</label
+        >
+        <div style="margin-bottom: 15px">
+          <input
+            type="radio"
+            id="text_input"
+            name="input_method"
+            value="text"
+            checked
+          />
+          <label for="text_input">Input Teks Langsung</label>
+        </div>
+        <div>
+          <input
+            type="radio"
+            id="file_input"
+            name="input_method"
+            value="file"
+          />
+          <label for="file_input">Upload File (.txt atau .csv)</label>
+        </div>
+      </div>
+
+      <form id="analyzeForm" enctype="multipart/form-data">
+        <!-- Area input teks (default) -->
+        <div id="textInputArea">
+          <textarea
+            id="chatText"
+            placeholder="Contoh:
+Selamat pagi, saya akan bekerja dengan disiplin hari ini.
+Saya senang bertemu dengan banyak teman.
+Kadang saya merasa khawatir dengan hasil kerja saya.
+
+Masukkan beberapa kalimat untuk analisis yang lebih akurat..."
+          ></textarea>
+        </div>
+
+        <!-- Area upload file (hidden) -->
+        <div id="fileInputArea" style="display: none">
+          <input
+            type="file"
+            id="fileUpload"
+            name="file"
+            accept=".txt,.csv"
+            style="
+              width: 100%;
+              padding: 15px;
+              border: 2px solid #ddd;
+              border-radius: 5px;
+            "
+          />
+          <p style="margin-top: 10px; color: #666; font-size: 14px">
+            Format yang didukung:<br />
+            • <strong>.txt</strong>: File chat dengan format [timestamp] nama:
+            pesan<br />
+            • <strong>.csv</strong>: File dengan kolom 'text', 'message', atau
+            'content'
+          </p>
+        </div>
+
+        <br />
+        <button type="submit">Analisis Kepribadian</button>
+      </form>
+
+      <div class="loading" id="loading">
+        <p>⏳ Sedang menganalisis kepribadian...</p>
+      </div>
+
+      <div class="results" id="results">
+        <h3>📊 Hasil Analisis Kepribadian</h3>
+        <div id="scores"></div>
+        <div class="interpretation" id="interpretation"></div>
+      </div>
+    </div>
+
+    <script>
+      // Tambahkan sebelum event listener form submit
+      document
+        .querySelectorAll('input[name="input_method"]')
+        .forEach((radio) => {
+          radio.addEventListener("change", function () {
+            const textArea = document.getElementById("textInputArea");
+            const fileArea = document.getElementById("fileInputArea");
+
+            if (this.value === "text") {
+              textArea.style.display = "block";
+              fileArea.style.display = "none";
+            } else {
+              textArea.style.display = "none";
+              fileArea.style.display = "block";
+            }
+          });
+        });
+
+      // Modifikasi form submit untuk handle file upload
+      document
+        .getElementById("analyzeForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const inputMethod = document.querySelector(
+            'input[name="input_method"]:checked'
+          ).value;
+          const formData = new FormData();
+
+          if (inputMethod === "text") {
+            const chatText = document.getElementById("chatText").value.trim();
+            if (!chatText) {
+              alert("Mohon masukkan teks untuk dianalisis!");
+              return;
+            }
+            formData.append("chat_text", chatText);
+          } else {
+            const fileInput = document.getElementById("fileUpload");
+            if (!fileInput.files[0]) {
+              alert("Mohon pilih file untuk dianalisis!");
+              return;
+            }
+            formData.append("file", fileInput.files[0]);
+          }
+
+          // Show loading
+          document.getElementById("loading").style.display = "block";
+          document.getElementById("results").style.display = "none";
+
+          // Send request
+          fetch("/analyze", {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              document.getElementById("loading").style.display = "none";
+
+              if (data.success) {
+                displayResults(data);
+              } else {
+                alert("Error: " + data.error);
+              }
+            })
+            .catch((error) => {
+              document.getElementById("loading").style.display = "none";
+              alert("Terjadi kesalahan: " + error);
+            });
+        });
+
+      function displayResults(data) {
+        const scoresDiv = document.getElementById("scores");
+        const interpretationDiv = document.getElementById("interpretation");
+
+        // Clear previous results
+        scoresDiv.innerHTML = "";
+
+        // Display scores
+        const traitNames = {
+          openness: "Openness (Keterbukaan)",
+          conscientiousness: "Conscientiousness (Kehati-hatian)",
+          extraversion: "Extraversion (Ekstrovert)",
+          agreeableness: "Agreeableness (Keramahan)",
+          neuroticism: "Neuroticism (Neurotisme)",
+        };
+
+        let maxScore = 0;
+        let maxTrait = "";
+
+        for (const [trait, score] of Object.entries(data.scores)) {
+          if (score > maxScore) {
+            maxScore = score;
+            maxTrait = trait;
+          }
+
+          const scoreItem = document.createElement("div");
+          scoreItem.className = "score-item";
+          if (trait === maxTrait && score > 0) {
+            scoreItem.classList.add("dominant");
+          }
+
+          scoreItem.innerHTML = `
+                    <span>${traitNames[trait]}</span>
+                    <div>
+                        <div class="score-bar">
+                            <div class="score-fill" style="width: ${
+                              score * 100
+                            }%"></div>
+                        </div>
+                        <span style="margin-left: 10px;">${(
+                          score * 100
+                        ).toFixed(1)}%</span>
+                    </div>
+                `;
+
+          scoresDiv.appendChild(scoreItem);
+        }
+
+        // Display interpretation
+        interpretationDiv.textContent = `💡 Interpretasi: ${data.dominant_trait}`;
+
+        // Show results
+        document.getElementById("results").style.display = "block";
+      }
+    </script>
+  </body>
+</html>
