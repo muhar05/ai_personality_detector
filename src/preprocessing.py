@@ -1,20 +1,22 @@
+import os
 import re
 import nltk
 from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 
-# Ensure NLTK stopwords available (download if missing)
-try:
-    _ = nltk.corpus.stopwords.words('indonesian')
-except Exception:
-    nltk.download('stopwords')
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-STOPWORDS = set(nltk.corpus.stopwords.words('indonesian'))
+# Load stopwords dari file
+with open(os.path.join(BASE_DIR, 'stopwords.txt'), encoding='utf-8') as f:
+    STOPWORDS = set(line.strip() for line in f if line.strip())
 
-SLANG = {
-    'gk': 'tidak', 'gak': 'tidak', 'nggak': 'tidak', 'ga': 'tidak',
-    'gw': 'saya', 'gue': 'saya', 'lo': 'kamu', 'kmu': 'kamu',
-    'sm': 'sama', 'sama2': 'sama', 'tdk': 'tidak'
-}
+# Load slang dari file
+SLANG = {}
+with open(os.path.join(BASE_DIR, 'slangwords.txt'), encoding='utf-8') as f:
+    for line in f:
+        if line.strip() and ':' in line:
+            slang, formal = line.strip().split(':', 1)
+            SLANG[slang.strip()] = formal.strip()
+
 NEGATIONS = {'tidak', 'bukan', 'nggak', 'gak', 'tdk', 'tak'}
 
 def normalize_token(tok):

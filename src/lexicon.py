@@ -2,11 +2,11 @@ from collections import Counter
 from preprocessing import preprocess_text, stemmer
 
 RAW_TRAITS = {
-    "openness": ["imajinasi", "ide", "baru", "pikir", "kreatif"],
-    "conscientiousness": ["disiplin", "tepat", "rapi", "teratur", "kerja"],
-    "extraversion": ["teman", "bicara", "senang", "ramai", "ngobrol", "koneksi"],
-    "agreeableness": ["bantu", "baik", "peduli", "teman", "sopan"],
-    "neuroticism": ["cemas", "khawatir", "takut", "gelisah", "panik"]
+    "openness": ["imajinasi", "ide", "baru", "pikir", "kreatif", "open minded", "kepo", "penasaran"],
+    "conscientiousness": ["disiplin", "tepat", "rapi", "teratur", "kerja", "on time", "niat", "serius", "telaten"],
+    "extraversion": ["teman", "bicara", "senang", "ramai", "ngobrol", "koneksi", "nongkrong", "mabar", "gabut", "hangout"],
+    "agreeableness": ["bantu", "baik", "peduli", "teman", "sopan", "ramah", "support", "care", "solid"],
+    "neuroticism": ["cemas", "khawatir", "takut", "gelisah", "panik", "galau", "baper", "overthinking"]
 }
 
 TRAITS = {}

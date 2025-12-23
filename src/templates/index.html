@@ -1,306 +1,946 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AI Personality Detector</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: {
+                50: "#eff6ff",
+                100: "#dbeafe",
+                200: "#bfdbfe",
+                300: "#93c5fd",
+                400: "#60a5fa",
+                500: "#3b82f6",
+                600: "#2563eb",
+                700: "#1d4ed8",
+                800: "#1e40af",
+                900: "#1e3a8a",
+              },
+              secondary: {
+                50: "#f0fdf4",
+                100: "#dcfce7",
+                200: "#bbf7d0",
+                300: "#86efac",
+                400: "#4ade80",
+                500: "#22c55e",
+                600: "#16a34a",
+                700: "#15803d",
+                800: "#166534",
+                900: "#14532d",
+              },
+            },
+            fontFamily: {
+              sans: ["Inter", "system-ui", "sans-serif"],
+            },
+            animation: {
+              float: "float 3s ease-in-out infinite",
+              "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+              "bounce-slow": "bounce 2s infinite",
+            },
+            keyframes: {
+              float: {
+                "0%, 100%": { transform: "translateY(0)" },
+                "50%": { transform: "translateY(-10px)" },
+              },
+            },
+          },
+        },
+      };
+    </script>
+
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: #f5f5f5;
+      .gradient-bg {
+        background: linear-gradient(
+          135deg,
+          #f0f9ff 0%,
+          #e0f2fe 50%,
+          #f0fdf4 100%
+        );
       }
-      .container {
-        background: white;
-        padding: 30px;
-        border-radius: 10px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+      .text-gradient {
+        background: linear-gradient(90deg, #3b82f6 0%, #22c55e 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
       }
-      h1 {
-        color: #333;
-        text-align: center;
-        margin-bottom: 30px;
+
+      .glass-card {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
       }
-      textarea {
-        width: 100%;
-        height: 200px;
-        padding: 15px;
-        border: 2px solid #ddd;
-        border-radius: 5px;
-        font-size: 14px;
-        resize: vertical;
+
+      .chart-container {
+        position: relative;
+        height: 400px;
       }
-      button {
-        background: #007bff;
-        color: white;
-        padding: 12px 30px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-        margin-top: 15px;
+
+      @media (max-width: 768px) {
+        .chart-container {
+          height: 300px;
+        }
       }
-      button:hover {
-        background: #0056b3;
-      }
-      .loading {
-        display: none;
-        text-align: center;
-        color: #666;
-        margin-top: 20px;
-      }
-      .results {
-        margin-top: 30px;
-        padding: 20px;
-        background: #f8f9fa;
-        border-radius: 5px;
-        display: none;
-      }
-      .score-item {
-        margin: 10px 0;
-        padding: 10px;
-        background: white;
-        border-radius: 5px;
-        display: flex;
-        justify-content: space-between;
-      }
-      .score-bar {
-        width: 200px;
-        height: 20px;
-        background: #e9ecef;
-        border-radius: 10px;
-        overflow: hidden;
-      }
-      .score-fill {
-        height: 100%;
-        background: #28a745;
-        transition: width 0.5s ease;
-      }
-      .dominant {
-        background: #d4edda;
-        border-left: 4px solid #28a745;
-      }
-      .interpretation {
-        margin-top: 20px;
-        padding: 15px;
-        background: #e3f2fd;
-        border-radius: 5px;
-        font-weight: bold;
-        color: #1976d2;
+
+      .progress-bar {
+        transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
       }
     </style>
   </head>
-  <body>
-    <div class="container">
-      <h1>🧠 AI Personality Detector</h1>
-      <p>
-        Masukkan teks chat atau kalimat untuk menganalisis kepribadian
-        berdasarkan model OCEAN:
-      </p>
-
-      <div style="margin-bottom: 20px">
-        <label style="display: block; margin-bottom: 10px; font-weight: bold"
-          >Pilih Metode Input:</label
-        >
-        <div style="margin-bottom: 15px">
-          <input
-            type="radio"
-            id="text_input"
-            name="input_method"
-            value="text"
-            checked
-          />
-          <label for="text_input">Input Teks Langsung</label>
+  <body class="gradient-bg min-h-screen font-sans text-gray-800">
+    <div class="container mx-auto px-4 py-8 max-w-7xl">
+      <!-- Header -->
+      <header class="text-center mb-12 animate-fade-in">
+        <div class="flex items-center justify-center gap-3 mb-4">
+          <div
+            class="p-3 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-2xl shadow-lg"
+          >
+            <i class="bi bi-robot text-3xl text-white"></i>
+          </div>
+          <h1 class="text-4xl md:text-5xl font-bold text-gradient">
+            AI Personality Detector
+          </h1>
         </div>
-        <div>
-          <input
-            type="radio"
-            id="file_input"
-            name="input_method"
-            value="file"
-          />
-          <label for="file_input">Upload File (.txt atau .csv)</label>
+        <p class="text-gray-600 text-lg max-w-3xl mx-auto">
+          Analisis kepribadian OCEAN dari pola komunikasi Anda secara otomatis
+          dengan visualisasi interaktif
+        </p>
+      </header>
+
+      <div class="grid lg:grid-cols-2 gap-8 mb-12">
+        <!-- Input Panel -->
+        <div class="space-y-6">
+          <div
+            class="glass-card rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-shadow duration-300"
+          >
+            <div class="flex items-center gap-3 mb-6">
+              <div class="p-2 bg-primary-100 rounded-lg">
+                <i class="bi bi-input-cursor-text text-xl text-primary-600"></i>
+              </div>
+              <h2 class="text-2xl font-bold text-gray-800">Input Data</h2>
+            </div>
+
+            <!-- Input Method Selector -->
+            <div class="mb-6">
+              <label class="block text-sm font-semibold text-gray-700 mb-3"
+                >Pilih Metode Input:</label
+              >
+              <div
+                class="flex rounded-xl overflow-hidden border border-gray-200"
+              >
+                <button
+                  id="textBtn"
+                  class="flex-1 py-3 px-4 flex items-center justify-center gap-2 font-medium transition-all duration-200 bg-primary-600 text-white"
+                >
+                  <i class="bi bi-chat-left-text"></i>
+                  <span>Teks Langsung</span>
+                </button>
+                <button
+                  id="fileBtn"
+                  class="flex-1 py-3 px-4 flex items-center justify-center gap-2 font-medium transition-all duration-200 bg-gray-100 text-gray-600 hover:bg-gray-200"
+                >
+                  <i class="bi bi-file-earmark-arrow-up"></i>
+                  <span>Upload File</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Text Input Area -->
+            <div id="textInputArea" class="space-y-4">
+              <div class="relative">
+                <textarea
+                  id="chatText"
+                  rows="8"
+                  class="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:ring-2 focus:ring-primary-200 focus:outline-none transition-all duration-200 bg-gray-50"
+                  placeholder="Contoh: 
+Selamat pagi! Saya akan bekerja dengan disiplin hari ini.
+Saya senang bertemu dengan teman baru.
+Kadang saya merasa khawatir dengan hasil kerja.
+Saya terbuka untuk mencoba metode baru.
+
+Masukkan minimal 3-5 kalimat untuk hasil yang akurat..."
+                ></textarea>
+                <div class="absolute bottom-3 right-3 flex items-center gap-2">
+                  <span id="charCount" class="text-sm text-gray-500"
+                    >0 karakter</span
+                  >
+                  <div
+                    class="tooltip"
+                    data-tip="Minimal 50 karakter untuk hasil optimal"
+                  >
+                    <i class="bi bi-info-circle text-gray-400"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="text-sm text-gray-500 flex items-center gap-1">
+                <i class="bi bi-lightbulb"></i>
+                <span>Semakin banyak teks, semakin akurat hasil analisis</span>
+              </div>
+            </div>
+
+            <!-- File Input Area -->
+            <div id="fileInputArea" class="hidden space-y-4">
+              <div
+                id="dropZone"
+                class="border-3 border-dashed border-gray-300 rounded-2xl p-8 text-center bg-gray-50 hover:bg-gray-100 transition-colors duration-200 cursor-pointer"
+              >
+                <i class="bi bi-cloud-arrow-up text-5xl text-gray-400 mb-4"></i>
+                <p class="font-medium text-gray-700 mb-2">
+                  Klik untuk memilih atau tarik file ke sini
+                </p>
+                <p class="text-sm text-gray-500">
+                  Format: .txt atau .csv (maks. 5MB)
+                </p>
+                <input
+                  type="file"
+                  id="fileInput"
+                  class="hidden"
+                  accept=".txt,.csv"
+                />
+              </div>
+              <div
+                id="fileInfo"
+                class="hidden p-4 bg-primary-50 rounded-xl border border-primary-100"
+              >
+                <div class="flex items-center justify-between">
+                  <div>
+                    <div class="flex items-center gap-2 mb-1">
+                      <i class="bi bi-file-earmark-text text-primary-600"></i>
+                      <span
+                        id="fileName"
+                        class="font-medium text-gray-800"
+                      ></span>
+                    </div>
+                    <div class="text-sm text-gray-600">
+                      <span id="fileSize"></span> • <span id="fileType"></span>
+                    </div>
+                  </div>
+                  <button
+                    id="removeFile"
+                    class="text-red-500 hover:text-red-700"
+                  >
+                    <i class="bi bi-x-circle text-xl"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Analyze Button -->
+            <button
+              id="analyzeBtn"
+              class="w-full mt-6 py-4 bg-gradient-to-r from-primary-600 to-secondary-600 hover:from-primary-700 hover:to-secondary-700 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-3"
+            >
+              <i class="bi bi-graph-up-arrow text-xl"></i>
+              <span>Analisis Kepribadian</span>
+            </button>
+          </div>
+
+          <!-- OCEAN Model Info -->
+          <div class="glass-card rounded-2xl p-6 shadow-xl">
+            <div class="flex items-center gap-3 mb-6">
+              <div class="p-2 bg-secondary-100 rounded-lg">
+                <i class="bi bi-info-circle text-xl text-secondary-600"></i>
+              </div>
+              <h3 class="text-xl font-bold text-gray-800">
+                Model OCEAN (Big Five)
+              </h3>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+              <div class="text-center p-3 bg-blue-50 rounded-lg">
+                <div class="text-blue-600 font-bold mb-1">O</div>
+                <div class="text-sm font-medium">Openness</div>
+                <div class="text-xs text-gray-600">Keterbukaan</div>
+              </div>
+              <div class="text-center p-3 bg-green-50 rounded-lg">
+                <div class="text-green-600 font-bold mb-1">C</div>
+                <div class="text-sm font-medium">Conscientiousness</div>
+                <div class="text-xs text-gray-600">Kesadaran</div>
+              </div>
+              <div class="text-center p-3 bg-red-50 rounded-lg">
+                <div class="text-red-600 font-bold mb-1">E</div>
+                <div class="text-sm font-medium">Extraversion</div>
+                <div class="text-xs text-gray-600">Ekstrovert</div>
+              </div>
+              <div class="text-center p-3 bg-yellow-50 rounded-lg">
+                <div class="text-yellow-600 font-bold mb-1">A</div>
+                <div class="text-sm font-medium">Agreeableness</div>
+                <div class="text-xs text-gray-600">Keramahan</div>
+              </div>
+              <div class="text-center p-3 bg-purple-50 rounded-lg">
+                <div class="text-purple-600 font-bold mb-1">N</div>
+                <div class="text-sm font-medium">Neuroticism</div>
+                <div class="text-xs text-gray-600">Neurotisme</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results Panel -->
+        <div class="space-y-6">
+          <!-- Loading State -->
+          <div id="loading" class="glass-card rounded-2xl p-8 shadow-xl hidden">
+            <div class="text-center">
+              <div
+                class="inline-block animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary-500 mb-6"
+              ></div>
+              <h3 class="text-xl font-bold text-gray-800 mb-2">
+                Menganalisis Kepribadian...
+              </h3>
+              <p class="text-gray-600">
+                Sedang memproses data dan menghasilkan insight
+              </p>
+              <div class="mt-6 w-full bg-gray-200 rounded-full h-2">
+                <div
+                  id="progressBar"
+                  class="bg-gradient-to-r from-primary-500 to-secondary-500 h-2 rounded-full w-0 progress-bar"
+                ></div>
+              </div>
+              <p id="progressText" class="text-sm text-gray-500 mt-2">
+                Memulai analisis...
+              </p>
+            </div>
+          </div>
+
+          <!-- Results Container -->
+          <div id="results" class="hidden">
+            <!-- Results Header -->
+            <div class="glass-card rounded-2xl p-6 shadow-xl mb-6">
+              <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center gap-3">
+                  <div class="p-2 bg-green-100 rounded-lg">
+                    <i class="bi bi-clipboard-data text-xl text-green-600"></i>
+                  </div>
+                  <div>
+                    <h2 class="text-2xl font-bold text-gray-800">
+                      Hasil Analisis
+                    </h2>
+                    <p class="text-gray-600 text-sm">Model OCEAN Personality</p>
+                  </div>
+                </div>
+                <button
+                  id="downloadBtn"
+                  class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2"
+                >
+                  <i class="bi bi-download"></i>
+                  <span>Unduh</span>
+                </button>
+              </div>
+
+              <!-- Dominant Trait -->
+              <div
+                id="dominantTrait"
+                class="p-4 bg-gradient-to-r from-green-50 to-blue-50 rounded-xl border border-green-200"
+              >
+                <div class="flex items-center gap-3">
+                  <div class="p-2 bg-white rounded-lg shadow-sm">
+                    <i class="bi bi-trophy text-2xl text-yellow-500"></i>
+                  </div>
+                  <div>
+                    <p class="text-sm font-medium text-gray-600">
+                      Trait Dominan
+                    </p>
+                    <h3
+                      id="dominantName"
+                      class="text-xl font-bold text-gray-800"
+                    >
+                      -
+                    </h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Trait Scores -->
+            <div class="glass-card rounded-2xl p-6 shadow-xl mb-6">
+              <h3 class="text-xl font-bold text-gray-800 mb-6">
+                Skor Kepribadian
+              </h3>
+              <div id="scoresContainer" class="space-y-4">
+                <!-- Scores will be populated here -->
+              </div>
+            </div>
+
+            <!-- Chart -->
+            <div class="glass-card rounded-2xl p-6 shadow-xl mb-6">
+              <h3 class="text-xl font-bold text-gray-800 mb-6">
+                Visualisasi Radar
+              </h3>
+              <div class="chart-container">
+                <canvas id="personalityChart"></canvas>
+              </div>
+            </div>
+
+            <!-- Interpretation -->
+            <div class="glass-card rounded-2xl p-6 shadow-xl">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="p-2 bg-yellow-100 rounded-lg">
+                  <i class="bi bi-lightbulb text-xl text-yellow-600"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800">Interpretasi</h3>
+              </div>
+              <p id="interpretationText" class="text-gray-700 leading-relaxed">
+                Hasil interpretasi akan muncul di sini setelah analisis selesai.
+              </p>
+            </div>
+          </div>
+
+          <!-- Initial Placeholder -->
+          <div
+            id="placeholder"
+            class="glass-card rounded-2xl p-8 shadow-xl text-center"
+          >
+            <div
+              class="inline-block p-4 bg-gradient-to-br from-primary-100 to-secondary-100 rounded-2xl mb-6"
+            >
+              <i class="bi bi-bar-chart text-4xl text-gradient"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-800 mb-3">
+              Siap untuk Analisis
+            </h3>
+            <p class="text-gray-600 mb-6">
+              Masukkan teks atau upload file chat Anda di panel sebelah kiri,
+              kemudian klik tombol "Analisis Kepribadian" untuk memulai.
+            </p>
+            <div class="flex flex-wrap justify-center gap-2">
+              <span
+                class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm"
+                >Model OCEAN</span
+              >
+              <span
+                class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm"
+                >Analisis Real-time</span
+              >
+              <span
+                class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm"
+                >Visual Interaktif</span
+              >
+            </div>
+          </div>
         </div>
       </div>
 
-      <form id="analyzeForm" enctype="multipart/form-data">
-        <!-- Area input teks (default) -->
-        <div id="textInputArea">
-          <textarea
-            id="chatText"
-            placeholder="Contoh:
-Selamat pagi, saya akan bekerja dengan disiplin hari ini.
-Saya senang bertemu dengan banyak teman.
-Kadang saya merasa khawatir dengan hasil kerja saya.
-
-Masukkan beberapa kalimat untuk analisis yang lebih akurat..."
-          ></textarea>
-        </div>
-
-        <!-- Area upload file (hidden) -->
-        <div id="fileInputArea" style="display: none">
-          <input
-            type="file"
-            id="fileUpload"
-            name="file"
-            accept=".txt,.csv"
-            style="
-              width: 100%;
-              padding: 15px;
-              border: 2px solid #ddd;
-              border-radius: 5px;
-            "
-          />
-          <p style="margin-top: 10px; color: #666; font-size: 14px">
-            Format yang didukung:<br />
-            • <strong>.txt</strong>: File chat dengan format [timestamp] nama:
-            pesan<br />
-            • <strong>.csv</strong>: File dengan kolom 'text', 'message', atau
-            'content'
-          </p>
-        </div>
-
-        <br />
-        <button type="submit">Analisis Kepribadian</button>
-      </form>
-
-      <div class="loading" id="loading">
-        <p>⏳ Sedang menganalisis kepribadian...</p>
-      </div>
-
-      <div class="results" id="results">
-        <h3>📊 Hasil Analisis Kepribadian</h3>
-        <div id="scores"></div>
-        <div class="interpretation" id="interpretation"></div>
-      </div>
+      <!-- Footer -->
+      <footer
+        class="text-center text-gray-600 text-sm pt-8 border-t border-gray-200"
+      >
+        <p>
+          AI Personality Detector • Analisis Kepribadian Berbasis AI • © 2024
+        </p>
+        <p class="mt-1">
+          Menggunakan model OCEAN (Big Five Personality Traits) untuk analisis
+          psikologis
+        </p>
+      </footer>
     </div>
 
     <script>
-      // Tambahkan sebelum event listener form submit
-      document
-        .querySelectorAll('input[name="input_method"]')
-        .forEach((radio) => {
-          radio.addEventListener("change", function () {
-            const textArea = document.getElementById("textInputArea");
-            const fileArea = document.getElementById("fileInputArea");
+      // DOM Elements
+      const textBtn = document.getElementById("textBtn");
+      const fileBtn = document.getElementById("fileBtn");
+      const textInputArea = document.getElementById("textInputArea");
+      const fileInputArea = document.getElementById("fileInputArea");
+      const dropZone = document.getElementById("dropZone");
+      const fileInput = document.getElementById("fileInput");
+      const fileInfo = document.getElementById("fileInfo");
+      const removeFile = document.getElementById("removeFile");
+      const analyzeBtn = document.getElementById("analyzeBtn");
+      const loading = document.getElementById("loading");
+      const results = document.getElementById("results");
+      const placeholder = document.getElementById("placeholder");
+      const chatText = document.getElementById("chatText");
+      const charCount = document.getElementById("charCount");
+      const progressBar = document.getElementById("progressBar");
+      const progressText = document.getElementById("progressText");
+      const scoresContainer = document.getElementById("scoresContainer");
+      const interpretationText = document.getElementById("interpretationText");
+      const dominantName = document.getElementById("dominantName");
+      const downloadBtn = document.getElementById("downloadBtn");
 
-            if (this.value === "text") {
-              textArea.style.display = "block";
-              fileArea.style.display = "none";
-            } else {
-              textArea.style.display = "none";
-              fileArea.style.display = "block";
-            }
-          });
+      let personalityChart = null;
+      let currentFile = null;
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", () => {
+        // Set sample text
+        chatText.value = `Hari ini saya merasa sangat bersemangat untuk memulai proyek baru. Saya telah menyusun rencana yang detail dan timeline yang jelas.
+
+Saya senang bisa berkolaborasi dengan tim yang solid. Diskusi dengan rekan kerja selalu memberikan ide-ide segar.
+
+Kadang saya merasa sedikit cemas tentang deadline, tapi pengalaman sebelumnya menunjukkan bahwa dengan kerja keras, semua akan berhasil.
+
+Saya terbuka untuk mencoba teknologi baru yang bisa mempercepat pekerjaan kami. Inovasi selalu menarik bagi saya.
+
+Saya percaya kerjasama tim adalah kunci sukses, jadi saya selalu berusaha mendengarkan masukan dari semua anggota tim.`;
+
+        updateCharCount();
+
+        // Add event listeners
+        setupEventListeners();
+      });
+
+      // Setup all event listeners
+      function setupEventListeners() {
+        // Input method toggle
+        textBtn.addEventListener("click", () => {
+          textBtn.className =
+            "flex-1 py-3 px-4 flex items-center justify-center gap-2 font-medium transition-all duration-200 bg-primary-600 text-white";
+          fileBtn.className =
+            "flex-1 py-3 px-4 flex items-center justify-center gap-2 font-medium transition-all duration-200 bg-gray-100 text-gray-600 hover:bg-gray-200";
+          textInputArea.classList.remove("hidden");
+          fileInputArea.classList.add("hidden");
         });
 
-      // Modifikasi form submit untuk handle file upload
-      document
-        .getElementById("analyzeForm")
-        .addEventListener("submit", function (e) {
+        fileBtn.addEventListener("click", () => {
+          fileBtn.className =
+            "flex-1 py-3 px-4 flex items-center justify-center gap-2 font-medium transition-all duration-200 bg-primary-600 text-white";
+          textBtn.className =
+            "flex-1 py-3 px-4 flex items-center justify-center gap-2 font-medium transition-all duration-200 bg-gray-100 text-gray-600 hover:bg-gray-200";
+          fileInputArea.classList.remove("hidden");
+          textInputArea.classList.add("hidden");
+        });
+
+        // Character count
+        chatText.addEventListener("input", updateCharCount);
+
+        // File upload
+        dropZone.addEventListener("click", () => fileInput.click());
+
+        dropZone.addEventListener("dragover", (e) => {
           e.preventDefault();
-
-          const inputMethod = document.querySelector(
-            'input[name="input_method"]:checked'
-          ).value;
-          const formData = new FormData();
-
-          if (inputMethod === "text") {
-            const chatText = document.getElementById("chatText").value.trim();
-            if (!chatText) {
-              alert("Mohon masukkan teks untuk dianalisis!");
-              return;
-            }
-            formData.append("chat_text", chatText);
-          } else {
-            const fileInput = document.getElementById("fileUpload");
-            if (!fileInput.files[0]) {
-              alert("Mohon pilih file untuk dianalisis!");
-              return;
-            }
-            formData.append("file", fileInput.files[0]);
-          }
-
-          // Show loading
-          document.getElementById("loading").style.display = "block";
-          document.getElementById("results").style.display = "none";
-
-          // Send request
-          fetch("/analyze", {
-            method: "POST",
-            body: formData,
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              document.getElementById("loading").style.display = "none";
-
-              if (data.success) {
-                displayResults(data);
-              } else {
-                alert("Error: " + data.error);
-              }
-            })
-            .catch((error) => {
-              document.getElementById("loading").style.display = "none";
-              alert("Terjadi kesalahan: " + error);
-            });
+          dropZone.classList.add("border-primary-500", "bg-primary-50");
         });
 
-      function displayResults(data) {
-        const scoresDiv = document.getElementById("scores");
-        const interpretationDiv = document.getElementById("interpretation");
+        dropZone.addEventListener("dragleave", () => {
+          dropZone.classList.remove("border-primary-500", "bg-primary-50");
+        });
 
-        // Clear previous results
-        scoresDiv.innerHTML = "";
+        dropZone.addEventListener("drop", (e) => {
+          e.preventDefault();
+          dropZone.classList.remove("border-primary-500", "bg-primary-50");
 
-        // Display scores
-        const traitNames = {
-          openness: "Openness (Keterbukaan)",
-          conscientiousness: "Conscientiousness (Kehati-hatian)",
-          extraversion: "Extraversion (Ekstrovert)",
-          agreeableness: "Agreeableness (Keramahan)",
-          neuroticism: "Neuroticism (Neurotisme)",
-        };
-
-        let maxScore = 0;
-        let maxTrait = "";
-
-        for (const [trait, score] of Object.entries(data.scores)) {
-          if (score > maxScore) {
-            maxScore = score;
-            maxTrait = trait;
+          if (e.dataTransfer.files.length) {
+            handleFileSelect(e.dataTransfer.files[0]);
           }
+        });
 
-          const scoreItem = document.createElement("div");
-          scoreItem.className = "score-item";
-          if (trait === maxTrait && score > 0) {
-            scoreItem.classList.add("dominant");
+        fileInput.addEventListener("change", (e) => {
+          if (e.target.files.length) {
+            handleFileSelect(e.target.files[0]);
           }
+        });
 
-          scoreItem.innerHTML = `
-                    <span>${traitNames[trait]}</span>
-                    <div>
-                        <div class="score-bar">
-                            <div class="score-fill" style="width: ${
-                              score * 100
-                            }%"></div>
-                        </div>
-                        <span style="margin-left: 10px;">${(
-                          score * 100
-                        ).toFixed(1)}%</span>
-                    </div>
-                `;
+        removeFile.addEventListener("click", () => {
+          fileInput.value = "";
+          fileInfo.classList.add("hidden");
+          currentFile = null;
+        });
 
-          scoresDiv.appendChild(scoreItem);
+        // Analyze button
+        analyzeBtn.addEventListener("click", startAnalysis);
+
+        // Download button
+        downloadBtn.addEventListener("click", downloadResults);
+      }
+
+      // Update character count
+      function updateCharCount() {
+        const count = chatText.value.length;
+        charCount.textContent = `${count} karakter`;
+
+        if (count < 50) {
+          charCount.classList.add("text-red-500");
+          charCount.classList.remove("text-yellow-500", "text-green-500");
+        } else if (count < 150) {
+          charCount.classList.remove("text-red-500", "text-green-500");
+          charCount.classList.add("text-yellow-500");
+        } else {
+          charCount.classList.remove("text-red-500", "text-yellow-500");
+          charCount.classList.add("text-green-500");
+        }
+      }
+
+      // Handle file selection
+      function handleFileSelect(file) {
+        if (file.size > 5 * 1024 * 1024) {
+          alert("File terlalu besar. Maksimum 5MB.");
+          return;
         }
 
-        // Display interpretation
-        interpretationDiv.textContent = `💡 Interpretasi: ${data.dominant_trait}`;
+        currentFile = file;
 
-        // Show results
-        document.getElementById("results").style.display = "block";
+        document.getElementById("fileName").textContent = file.name;
+        document.getElementById("fileSize").textContent = formatFileSize(
+          file.size
+        );
+        document.getElementById("fileType").textContent =
+          file.type || "Tidak diketahui";
+
+        fileInfo.classList.remove("hidden");
+      }
+
+      // Format file size
+      function formatFileSize(bytes) {
+        if (bytes < 1024) return bytes + " B";
+        if (bytes < 1048576) return (bytes / 1024).toFixed(1) + " KB";
+        return (bytes / 1048576).toFixed(1) + " MB";
+      }
+
+      // Start analysis
+      function startAnalysis() {
+        // Validate input
+        if (textBtn.classList.contains("bg-primary-600")) {
+          if (chatText.value.trim().length < 30) {
+            alert(
+              "Mohon masukkan minimal 30 karakter untuk analisis yang akurat."
+            );
+            return;
+          }
+        } else {
+          if (!currentFile) {
+            alert("Mohon pilih file untuk dianalisis.");
+            return;
+          }
+        }
+
+        // Show loading, hide other elements
+        loading.classList.remove("hidden");
+        results.classList.add("hidden");
+        placeholder.classList.add("hidden");
+
+        // Simulate progress
+        simulateProgress();
+
+        // Simulate analysis (in real app, this would be an API call)
+        setTimeout(() => {
+          const text = textBtn.classList.contains("bg-primary-600")
+            ? chatText.value
+            : "Sample chat text from file analysis...";
+
+          const results = generateMockResults(text);
+          displayResults(results);
+        }, 2500);
+      }
+
+      // Simulate progress bar
+      function simulateProgress() {
+        let progress = 0;
+        const steps = [
+          "Memproses teks...",
+          "Menganalisis pola bahasa...",
+          "Menghitung skor OCEAN...",
+          "Membuat visualisasi...",
+          "Menyiapkan hasil...",
+        ];
+
+        const interval = setInterval(() => {
+          progress += Math.random() * 15;
+          if (progress > 100) progress = 100;
+
+          progressBar.style.width = `${progress}%`;
+
+          // Update progress text based on progress
+          const stepIndex = Math.floor(progress / 20);
+          if (stepIndex < steps.length) {
+            progressText.textContent = steps[stepIndex];
+          }
+
+          if (progress >= 100) {
+            clearInterval(interval);
+            progressText.textContent = "Analisis selesai!";
+          }
+        }, 200);
+      }
+
+      // Generate mock results (replace with actual API call)
+      function generateMockResults(text) {
+        const textLower = text.toLowerCase();
+
+        // Calculate scores based on keywords (simplified)
+        const calculateScore = (keywords, base) => {
+          let score = base;
+          keywords.forEach((keyword) => {
+            if (textLower.includes(keyword)) score += 0.05;
+          });
+          return Math.min(0.95, Math.max(0.05, score));
+        };
+
+        const scores = {
+          openness: calculateScore(
+            ["baru", "kreatif", "inovasi", "coba", "eksplorasi", "terbuka"],
+            0.65
+          ),
+          conscientiousness: calculateScore(
+            [
+              "rencana",
+              "disiplin",
+              "tepat waktu",
+              "detail",
+              "organisasi",
+              "tanggung jawab",
+            ],
+            0.75
+          ),
+          extraversion: calculateScore(
+            ["teman", "sosial", "tim", "kelompok", "diskusi", "berinteraksi"],
+            0.55
+          ),
+          agreeableness: calculateScore(
+            ["bantu", "kerja sama", "tim", "dengarkan", "harmoni", "peduli"],
+            0.7
+          ),
+          neuroticism: calculateScore(
+            ["cemas", "khawatir", "stres", "takut", "ragu", "gugup"],
+            0.4
+          ),
+        };
+
+        // Find dominant trait
+        const traits = Object.keys(scores);
+        const dominantTrait = traits.reduce((a, b) =>
+          scores[a] > scores[b] ? a : b
+        );
+
+        // Trait names and descriptions
+        const traitInfo = {
+          openness: {
+            name: "Openness",
+            idName: "Keterbukaan",
+            desc: "Tingkat keterbukaan terhadap pengalaman baru, imajinasi, dan ide-ide abstrak.",
+            icon: "bi-globe2",
+            color: "blue",
+          },
+          conscientiousness: {
+            name: "Conscientiousness",
+            idName: "Kesadaran",
+            desc: "Tingkat keteraturan, tanggung jawab, dan keandalan dalam bekerja.",
+            icon: "bi-check2-circle",
+            color: "green",
+          },
+          extraversion: {
+            name: "Extraversion",
+            idName: "Ekstrovert",
+            desc: "Tingkat kenyamanan dalam interaksi sosial dan kecenderungan mencari stimulasi sosial.",
+            icon: "bi-people",
+            color: "red",
+          },
+          agreeableness: {
+            name: "Agreeableness",
+            idName: "Keramahan",
+            desc: "Tingkat keramahan, kerjasama, dan kepercayaan terhadap orang lain.",
+            icon: "bi-heart",
+            color: "yellow",
+          },
+          neuroticism: {
+            name: "Neuroticism",
+            idName: "Neurotisme",
+            desc: "Tingkat ketidakstabilan emosional dan kecenderungan mengalami emosi negatif.",
+            icon: "bi-shield-exclamation",
+            color: "purple",
+          },
+        };
+
+        // Generate interpretation
+        const interpretations = {
+          openness:
+            "Anda menunjukkan tingkat keterbukaan yang tinggi terhadap pengalaman baru. Pola komunikasi Anda mencerminkan kreativitas, keingintahuan intelektual, dan apresiasi terhadap keindahan.",
+          conscientiousness:
+            "Anda memiliki kesadaran dan disiplin yang kuat. Pola komunikasi Anda menunjukkan keteraturan, tanggung jawab, dan orientasi pada pencapaian tujuan.",
+          extraversion:
+            "Anda cenderung ekstrovert dan nyaman dengan interaksi sosial. Pola komunikasi Anda menunjukkan energi positif dan kecenderungan untuk terlibat dengan lingkungan sosial.",
+          agreeableness:
+            "Anda menunjukkan tingkat keramahan dan empati yang tinggi. Pola komunikasi Anda mencerminkan kepercayaan, altruisme, dan kecenderungan untuk bekerjasama.",
+          neuroticism:
+            "Anda menunjukkan kecenderungan mengalami emosi negatif seperti kecemasan. Pola komunikasi Anda mencerminkan sensitivitas terhadap stres dan ketidakpastian.",
+        };
+
+        return {
+          scores,
+          dominant: dominantTrait,
+          traitInfo,
+          interpretation:
+            interpretations[dominantTrait] ||
+            "Analisis menunjukkan profil kepribadian yang seimbang.",
+        };
+      }
+
+      // Display results
+      function displayResults(data) {
+        if (!data.success) {
+          alert(data.error);
+          return;
+        }
+        const resultsDiv = document.getElementById("results");
+        resultsDiv.innerHTML = "";
+        for (const [name, scores] of Object.entries(data.results)) {
+          resultsDiv.innerHTML += `<h3>${name}</h3>
+          <ul>
+            <li>Openness: ${scores.openness}</li>
+            <li>Conscientiousness: ${scores.conscientiousness}</li>
+            <li>Extraversion: ${scores.extraversion}</li>
+            <li>Agreeableness: ${scores.agreeableness}</li>
+            <li>Neuroticism: ${scores.neuroticism}</li>
+          </ul>`;
+          // Tambahkan radar chart per user jika mau (gunakan Chart.js)
+        }
+      }
+
+      // Create radar chart
+      function createChart(scores, traitInfo) {
+        const ctx = document
+          .getElementById("personalityChart")
+          .getContext("2d");
+
+        // Destroy previous chart if exists
+        if (personalityChart) {
+          personalityChart.destroy();
+        }
+
+        const colorMap = {
+          openness: "#3b82f6",
+          conscientiousness: "#10b981",
+          extraversion: "#ef4444",
+          agreeableness: "#f59e0b",
+          neuroticism: "#8b5cf6",
+        };
+
+        personalityChart = new Chart(ctx, {
+          type: "radar",
+          data: {
+            labels: Object.keys(scores).map((t) => traitInfo[t].name),
+            datasets: [
+              {
+                label: "Skor Kepribadian",
+                data: Object.values(scores).map((s) => s * 100),
+                backgroundColor: "rgba(59, 130, 246, 0.1)",
+                borderColor: "#3b82f6",
+                pointBackgroundColor: Object.keys(scores).map(
+                  (t) => colorMap[t]
+                ),
+                pointBorderColor: "#fff",
+                pointHoverBackgroundColor: "#fff",
+                pointHoverBorderColor: "#3b82f6",
+                borderWidth: 2,
+                pointRadius: 4,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              r: {
+                angleLines: {
+                  color: "rgba(0, 0, 0, 0.1)",
+                },
+                grid: {
+                  color: "rgba(0, 0, 0, 0.05)",
+                },
+                pointLabels: {
+                  font: {
+                    size: 14,
+                    family: "'Inter', 'system-ui', 'sans-serif'",
+                    weight: "600",
+                  },
+                  color: "#374151",
+                },
+                ticks: {
+                  backdropColor: "transparent",
+                  font: {
+                    size: 11,
+                  },
+                  color: "#6b7280",
+                  callback: function (value) {
+                    return value + "%";
+                  },
+                },
+                suggestedMin: 0,
+                suggestedMax: 100,
+              },
+            },
+            plugins: {
+              legend: {
+                display: false,
+              },
+              tooltip: {
+                callbacks: {
+                  label: function (context) {
+                    const trait = Object.keys(scores)[context.dataIndex];
+                    return `${traitInfo[trait].idName}: ${context.raw.toFixed(
+                      1
+                    )}%`;
+                  },
+                },
+              },
+            },
+            animation: {
+              duration: 2000,
+              easing: "easeOutQuart",
+            },
+          },
+        });
+      }
+
+      // Download results
+      function downloadResults() {
+        const data = {
+          title: "AI Personality Detector Results",
+          date: new Date().toISOString(),
+          scores: {},
+          interpretation: interpretationText.textContent,
+        };
+
+        // Collect scores from DOM
+        document.querySelectorAll("#scoresContainer > div").forEach((div) => {
+          const name = div.querySelector("h4").textContent;
+          const score = div
+            .querySelector(".text-2xl")
+            .textContent.replace("%", "");
+          data.scores[name] = parseFloat(score);
+        });
+
+        // Create download
+        const dataStr = JSON.stringify(data, null, 2);
+        const dataBlob = new Blob([dataStr], { type: "application/json" });
+        const url = URL.createObjectURL(dataBlob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `personality-analysis-${new Date()
+          .toISOString()
+          .slice(0, 10)}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        // Show feedback
+        const originalHTML = downloadBtn.innerHTML;
+        downloadBtn.innerHTML =
+          '<i class="bi bi-check2"></i><span>Terunduh!</span>';
+        downloadBtn.className =
+          "px-4 py-2 bg-green-100 hover:bg-green-200 text-green-700 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2";
+
+        setTimeout(() => {
+          downloadBtn.innerHTML = originalHTML;
+          downloadBtn.className =
+            "px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2";
+        }, 2000);
       }
     </script>
   </body>

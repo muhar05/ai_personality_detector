@@ -19,7 +19,6 @@ import joblib
 from chat_utils import read_chat_file
 from preprocessing import preprocess_text
 from lexicon import lexicon_scores
-from model import train_classifier, predict_with_model
 
 # ------------------ Utilities ------------------
 # Ensure NLTK stopwords available (download if missing)
@@ -177,6 +176,16 @@ def predict_with_model(text, model_path):
     names = ['openness','conscientiousness','extraversion','agreeableness','neuroticism']
     return dict(zip(names, map(int, pred)))
 
+def interpret_trait(trait):
+    mapping = {
+        "openness": "Terbuka pada pengalaman baru",
+        "conscientiousness": "Teliti & Disiplin",
+        "extraversion": "Ekstrovert",
+        "agreeableness": "Mudah bergaul & ramah",
+        "neuroticism": "Mudah cemas"
+    }
+    return mapping.get(trait, trait)
+
 # ------------------ Main script behavior ------------------
 def analyze_chat_file(chat_path, model_path=None, show_plot=False):
     name, messages, text = read_chat_file(chat_path)
@@ -188,16 +197,9 @@ def analyze_chat_file(chat_path, model_path=None, show_plot=False):
     for k, v in normalized.items():
         print(f"{k.capitalize()}: {v:.2f}")
 
-    trait_labels = {
-        "openness": "Openness (Terbuka pada pengalaman baru)",
-        "conscientiousness": "Conscientiousness (Teliti & Disiplin)",
-        "extraversion": "Extraversion (Ekstrovert)",
-        "agreeableness": "Agreeableness (Mudah bergaul & ramah)",
-        "neuroticism": "Neuroticism (Mudah cemas)"
-    }
     max_trait = max(normalized, key=normalized.get)
     if normalized[max_trait] > 0:
-        print(f"\nInterpretasi: {name} cenderung memiliki kepribadian {trait_labels[max_trait]}.")
+        print(f"\nInterpretasi: {name} cenderung memiliki kepribadian {interpret_trait(max_trait)}.")
     else:
         print(f"\nInterpretasi: Tidak ditemukan kecenderungan kepribadian yang dominan pada {name}.")
 
