@@ -12,6 +12,10 @@ Sistem ini merupakan aplikasi berbasis AI yang menganalisis pola komunikasi perc
 - **Antarmuka Web**: Upload file chat dan dapatkan hasil analisis secara interaktif.
 - **Visualisasi hasil**: Radar chart OCEAN pada web.
 
+## Arsitektur Sistem
+
+Untuk memahami arsitektur dan alur kerja sistem secara detail, silakan lihat [Dokumentasi Arsitektur](docs/ARCHITECTURE.md).
+
 ## Struktur Folder
 
 ```
@@ -23,6 +27,15 @@ ai_personality_detector/
 ├── stopwords.txt
 ├── data/
 │   └── chat_sample_labeled.txt
+├── diagrams/
+│   ├── architecture.mmd
+│   ├── architecture.png
+│   ├── architecture.jpg
+│   ├── analyze-sequence.mmd
+│   ├── analyze-sequence.png
+│   └── analyze-sequence.jpg
+├── docs/
+│   └── ARCHITECTURE.md
 ├── src/
 │   ├── app.py
 │   ├── chat_utils.py

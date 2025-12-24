@@ -1,0 +1,36 @@
+flowchart LR
+    %% High-level architecture for ai_personality_detector
+    A["Browser / Web UI<br/>(src/templates/index.html)<br/>- Upload chat .txt<br/>- Input teks langsung<br/>- Visualisasi radar OCEAN"] -->|"POST /analyze (file/teks)"| B["Flask App<br/>src/web_app.py"]
+
+    subgraph Server[Server Aplikasi]
+      direction LR
+      B -->|Jika file| U[("uploads/")]
+      U --> D["Chat Parser<br/>src/chat_utils.py<br/>parse_chat_per_user()"]
+      B -->|Jika teks| E["Cleaner<br/>web_app.clean_chat_text()"]
+
+      D --> F["Preprocessing NLP<br/>src/preprocessing.py<br/>simple_preprocess()"]
+      E --> F
+
+      F --> G["TF-IDF Vectorizer"]
+      G --> H["MultiOutputClassifier<br/>(LogisticRegression)<br/>predict_with_model()"]
+
+      H -->|"JSON hasil OCEAN"| B
+    end
+
+    B -->|"respon JSON"| A
+
+    %% Resources
+    subgraph Resources
+      direction TB
+      R1["stopwords.txt"]
+      R2["slangwords.txt"]
+      M[("personality_clf.joblib")]
+    end
+
+    F -.-> R1
+    F -.-> R2
+    H -.->|"load/gunakan"| M
+
+    %% Notes
+    classDef note fill:#f9f9f9,stroke:#bbb,color:#333,stroke-dasharray: 3 3
+    N1["Catatan:<br/>MODEL_PATH di web_app.py masih hardcoded.<br/>Sebaiknya diganti path relatif ke<br/>src/personality_clf.joblib untuk deployment."]:::note
