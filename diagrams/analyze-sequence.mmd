@@ -1,0 +1,30 @@
+sequenceDiagram
+    autonumber
+    participant U as User/Browser
+    participant W as Flask (web_app.py)
+    participant P as Parser (chat_utils.py)
+    participant N as NLP (preprocessing.py)
+    participant M as Model (TF-IDF+LogReg)
+
+    U->>W: POST /analyze (file atau text)
+    alt Upload file
+        W->>W: Simpan ke uploads/ (secure_filename)
+        W->>P: parse_chat_per_user(file_path)
+        P-->>W: {user: [msg...]}
+        W->>W: Hapus file sementara
+    else Input teks langsung
+        W->>W: clean_chat_text(text)
+        W-->>W: {"User": gabungan teks}
+    end
+
+    loop per user
+        W->>M: predict_with_model(text, MODEL_PATH)
+        M->>M: joblib.load(model)
+        M->>N: simple_preprocess(text)
+        N-->>M: teks terproses
+        M->>M: TF-IDF transform dan clf.predict
+        M-->>W: {O,C,E,A,N (0/1)}
+    end
+
+    W-->>U: JSON hasil per user
+    Note over W,M: MODEL_PATH sebaiknya relatif (mis. src/personality_clf.joblib)
