@@ -70,8 +70,8 @@ Diagram sequence di atas menunjukkan alur detail dari endpoint `/analyze`:
 
 #### Input Teks Langsung
 1. User mengirim request POST ke `/analyze` dengan field `text`
-2. Flask memanggil `clean_chat_text()` untuk membersihkan format chat
-3. Hasil berupa dictionary `{"User": combined_text}`
+2. Flask memanggil `clean_chat_text()` untuk membersihkan format chat dari timestamp dan nama pengirim
+3. Hasil berupa teks yang sudah dibersihkan, kemudian dibungkus dalam dictionary `{"User": cleaned_text}`
 
 #### Prediksi per User
 Untuk setiap user dalam hasil parsing/cleaning:
@@ -179,6 +179,13 @@ Aplikasi akan berjalan di `http://localhost:5000`
 ### Melatih Model Baru
 ```bash
 python src/model.py
+```
+
+**Catatan**: Untuk melatih model, diperlukan file dataset `data/train.csv` dengan format:
+```
+id,text,openness,conscientiousness,extraversion,agreeableness,neuroticism
+1,"contoh teks",1,0,1,1,0
+...
 ```
 
 Model akan disimpan sebagai `personality_clf.joblib`
