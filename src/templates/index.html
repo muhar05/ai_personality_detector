@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AI Personality Detector</title>
+    <title>Sistem Analisis Pola Komunikasi Percakapan Berbasis AI</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
@@ -114,12 +114,12 @@
             <i class="bi bi-robot text-3xl text-white"></i>
           </div>
           <h1 class="text-4xl md:text-5xl font-bold text-gradient">
-            AI Personality Detector
+            Sistem Analisis Pola Komunikasi Percakapan Berbasis AI
           </h1>
         </div>
         <p class="text-gray-600 text-lg max-w-3xl mx-auto">
-          Analisis kepribadian OCEAN dari pola komunikasi Anda secara otomatis
-          dengan visualisasi interaktif
+          Analisis pola komunikasi percakapan Anda secara otomatis dengan model
+          OCEAN dan visualisasi interaktif
         </p>
       </header>
 
@@ -247,7 +247,7 @@ Masukkan minimal 3-5 kalimat untuk hasil yang akurat..."
               class="w-full mt-6 py-4 bg-gradient-to-r from-primary-600 to-secondary-600 hover:from-primary-700 hover:to-secondary-700 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-3"
             >
               <i class="bi bi-graph-up-arrow text-xl"></i>
-              <span>Analisis Kepribadian</span>
+              <span>Analisis Pola Komunikasi</span>
             </button>
           </div>
 
@@ -439,9 +439,7 @@ Masukkan minimal 3-5 kalimat untuk hasil yang akurat..."
       <footer
         class="text-center text-gray-600 text-sm pt-8 border-t border-gray-200"
       >
-        <p>
-          AI Personality Detector • Analisis Kepribadian Berbasis AI • © 2024
-        </p>
+        <p>Sistem Analisis Pola Komunikasi Percakapan Berbasis AI • © 2024</p>
         <p class="mt-1">
           Menggunakan model OCEAN (Big Five Personality Traits) untuk analisis
           psikologis
@@ -603,12 +601,10 @@ Saya percaya kerjasama tim adalah kunci sukses, jadi saya selalu berusaha menden
 
       // Start analysis
       function startAnalysis() {
-        // Validate input
+        // Validasi input
         if (textBtn.classList.contains("bg-primary-600")) {
           if (chatText.value.trim().length < 30) {
-            alert(
-              "Mohon masukkan minimal 30 karakter untuk analisis yang akurat."
-            );
+            alert("Teks terlalu pendek. Masukkan minimal 30 karakter.");
             return;
           }
         } else {
@@ -618,23 +614,20 @@ Saya percaya kerjasama tim adalah kunci sukses, jadi saya selalu berusaha menden
           }
         }
 
-        // Show loading, hide other elements
         loading.classList.remove("hidden");
         results.classList.add("hidden");
         placeholder.classList.add("hidden");
-
-        // Simulate progress
         simulateProgress();
 
-        // Simulate analysis (in real app, this would be an API call)
-        setTimeout(() => {
-          const text = textBtn.classList.contains("bg-primary-600")
-            ? chatText.value
-            : "Sample chat text from file analysis...";
+        // Kirim data ke backend Flask
+        let formData = new FormData();
+        if (textBtn.classList.contains("bg-primary-600")) {
+          formData.append("chat_text", chatText.value);
+        } else if (currentFile) {
+          formData.append("file", currentFile);
+        }
 
-          const results = generateMockResults(text);
-          displayResults(results);
-        }, 2500);
+        fetchResults(formData); // <--- panggil backend, bukan generateMockResults
       }
 
       // Simulate progress bar
@@ -785,19 +778,40 @@ Saya percaya kerjasama tim adalah kunci sukses, jadi saya selalu berusaha menden
           alert(data.error);
           return;
         }
-        const resultsDiv = document.getElementById("results");
-        resultsDiv.innerHTML = "";
-        for (const [name, scores] of Object.entries(data.results)) {
-          resultsDiv.innerHTML += `<h3>${name}</h3>
-          <ul>
-            <li>Openness: ${scores.openness}</li>
-            <li>Conscientiousness: ${scores.conscientiousness}</li>
-            <li>Extraversion: ${scores.extraversion}</li>
-            <li>Agreeableness: ${scores.agreeableness}</li>
-            <li>Neuroticism: ${scores.neuroticism}</li>
-          </ul>`;
-          // Tambahkan radar chart per user jika mau (gunakan Chart.js)
+        results.classList.remove("hidden");
+        loading.classList.add("hidden");
+        placeholder.classList.add("hidden");
+
+        // Dominant trait
+        dominantName.textContent = data.dominant_trait;
+
+        // Trait scores
+        scoresContainer.innerHTML = "";
+        for (const [trait, score] of Object.entries(data.scores)) {
+          scoresContainer.innerHTML += `
+      <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+        <h4 class="font-semibold text-gray-700">${
+          trait.charAt(0).toUpperCase() + trait.slice(1)
+        }</h4>
+        <span class="text-2xl font-bold text-primary-600">${(
+          score * 100
+        ).toFixed(1)}%</span>
+      </div>
+    `;
         }
+
+        // Chart
+        createChart(data.scores, {
+          openness: { name: "Openness", idName: "Keterbukaan" },
+          conscientiousness: { name: "Conscientiousness", idName: "Kesadaran" },
+          extraversion: { name: "Extraversion", idName: "Ekstrovert" },
+          agreeableness: { name: "Agreeableness", idName: "Keramahan" },
+          neuroticism: { name: "Neuroticism", idName: "Neurotisme" },
+        });
+
+        // Interpretation
+        interpretationText.textContent =
+          "Trait dominan: " + data.dominant_trait;
       }
 
       // Create radar chart
@@ -941,6 +955,23 @@ Saya percaya kerjasama tim adalah kunci sukses, jadi saya selalu berusaha menden
           downloadBtn.className =
             "px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2";
         }, 2000);
+      }
+
+      // Fetch results from server
+      function fetchResults(formData) {
+        fetch("/analyze", {
+          method: "POST",
+          body: formData,
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            setTimeout(() => {
+              displayResults(data);
+            }, 5000); // Delay 5 detik sebelum menampilkan hasil
+          })
+          .catch((err) => {
+            alert("Gagal menghubungi server: " + err.message);
+          });
       }
     </script>
   </body>
