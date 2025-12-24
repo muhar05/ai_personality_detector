@@ -18,7 +18,6 @@ import joblib
 
 from chat_utils import read_chat_file
 from preprocessing import preprocess_text
-from lexicon import lexicon_scores
 
 # ------------------ Utilities ------------------
 # Ensure NLTK stopwords available (download if missing)
