@@ -182,11 +182,14 @@ python src/model.py
 ```
 
 **Catatan**: Untuk melatih model, diperlukan file dataset `data/train.csv` dengan format:
-```
+```csv
 id,text,openness,conscientiousness,extraversion,agreeableness,neuroticism
-1,"contoh teks",1,0,1,1,0
-...
+1,"Saya suka mencoba hal baru dan kreatif",1,0,1,0,0
+2,"Saya selalu disiplin dan tepat waktu",0,1,0,1,0
+3,"Saya sering merasa khawatir dan cemas",0,0,0,0,1
 ```
+
+Setiap trait (O, C, E, A, N) bernilai 0 atau 1.
 
 Model akan disimpan sebagai `personality_clf.joblib`
 
