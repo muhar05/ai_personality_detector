@@ -21,43 +21,47 @@
           extend: {
             colors: {
               primary: {
-                50: "#eff6ff",
-                100: "#dbeafe",
-                200: "#bfdbfe",
-                300: "#93c5fd",
-                400: "#60a5fa",
-                500: "#3b82f6",
-                600: "#2563eb",
-                700: "#1d4ed8",
-                800: "#1e40af",
-                900: "#1e3a8a",
+                50: '#eff6ff',
+                100: '#dbeafe',
+                200: '#bfdbfe',
+                300: '#93c5fd',
+                400: '#60a5fa',
+                500: '#3b82f6',
+                600: '#2563eb',
+                700: '#1d4ed8',
+                800: '#1e40af',
+                900: '#1e3a8a',
               },
               secondary: {
-                50: "#f0fdf4",
-                100: "#dcfce7",
-                200: "#bbf7d0",
-                300: "#86efac",
-                400: "#4ade80",
-                500: "#22c55e",
-                600: "#16a34a",
-                700: "#15803d",
-                800: "#166534",
-                900: "#14532d",
+                50: '#f0fdf4',
+                100: '#dcfce7',
+                200: '#bbf7d0',
+                300: '#86efac',
+                400: '#4ade80',
+                500: '#22c55e',
+                600: '#16a34a',
+                700: '#15803d',
+                800: '#166534',
+                900: '#14532d',
               },
-            },
-            fontFamily: {
-              sans: ["Inter", "system-ui", "sans-serif"],
             },
             animation: {
-              float: "float 3s ease-in-out infinite",
-              "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-              "bounce-slow": "bounce 2s infinite",
+              'fade-in': 'fadeIn 0.5s ease-in-out',
+              'slide-up': 'slideUp 0.3s ease-out',
+              'pulse-slow': 'pulse 3s infinite',
             },
             keyframes: {
-              float: {
-                "0%, 100%": { transform: "translateY(0)" },
-                "50%": { transform: "translateY(-10px)" },
+              fadeIn: {
+                '0%': { opacity: '0', transform: 'translateY(10px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
               },
+              slideUp: {
+                '0%': { opacity: '0', transform: 'translateY(20px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+            },
+            backgroundImage: {
+              'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
             },
           },
         },
@@ -68,9 +72,8 @@
       .gradient-bg {
         background: linear-gradient(
           135deg,
-          #f0f9ff 0%,
-          #e0f2fe 50%,
-          #f0fdf4 100%
+          #667eea 0%,
+          #764ba2 100%
         );
       }
 
@@ -82,9 +85,10 @@
       }
 
       .glass-card {
-        background: rgba(255, 255, 255, 0.8);
+        background: rgba(255, 255, 255, 0.9);
         backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 8px 32px rgba(31, 38, 135, 0.07);
       }
 
       .chart-container {
@@ -101,6 +105,18 @@
       .progress-bar {
         transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
       }
+
+      .gradient-border {
+        position: relative;
+        background: linear-gradient(white, white) padding-box,
+                    linear-gradient(135deg, #3b82f6, #22c55e) border-box;
+        border: 2px solid transparent;
+      }
+
+      .insufficient-data {
+        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        border-color: #f59e0b;
+      }
     </style>
   </head>
   <body class="gradient-bg min-h-screen font-sans text-gray-800">
@@ -109,7 +125,7 @@
       <header class="text-center mb-12 animate-fade-in">
         <div class="flex items-center justify-center gap-3 mb-4">
           <div
-            class="p-3 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-2xl shadow-lg"
+            class="p-3 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-2xl shadow-lg animate-float"
           >
             <i class="bi bi-robot text-3xl text-white"></i>
           </div>
@@ -127,7 +143,7 @@
         <!-- Input Panel -->
         <div class="space-y-6">
           <div
-            class="glass-card rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-shadow duration-300"
+            class="glass-card rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-300 gradient-border"
           >
             <div class="flex items-center gap-3 mb-6">
               <div class="p-2 bg-primary-100 rounded-lg">
@@ -142,11 +158,11 @@
                 >Pilih Metode Input:</label
               >
               <div
-                class="flex rounded-xl overflow-hidden border border-gray-200"
+                class="flex rounded-xl overflow-hidden border border-gray-200 shadow-sm"
               >
                 <button
                   id="textBtn"
-                  class="flex-1 py-3 px-4 flex items-center justify-center gap-2 font-medium transition-all duration-200 bg-primary-600 text-white"
+                  class="flex-1 py-3 px-4 flex items-center justify-center gap-2 font-medium transition-all duration-200 bg-primary-600 text-white hover:bg-primary-700"
                 >
                   <i class="bi bi-chat-left-text"></i>
                   <span>Teks Langsung</span>
@@ -167,30 +183,27 @@
                 <textarea
                   id="chatText"
                   rows="8"
-                  class="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:ring-2 focus:ring-primary-200 focus:outline-none transition-all duration-200 bg-gray-50"
-                  placeholder="Contoh: 
-Selamat pagi! Saya akan bekerja dengan disiplin hari ini.
-Saya senang bertemu dengan teman baru.
-Kadang saya merasa khawatir dengan hasil kerja.
-Saya terbuka untuk mencoba metode baru.
-
-Masukkan minimal 3-5 kalimat untuk hasil yang akurat..."
+                  class="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:ring-2 focus:ring-primary-200 focus:outline-none transition-all duration-200 bg-gray-50 placeholder-gray-400"
+                  placeholder="Masukkan minimal 3-5 baris chat untuk hasil yang akurat...
+Contoh format:
+[17/10/25, 18.28.04] papi chaee 05: Abis berapa dm ini dit ? 🗿
+[17/10/25, 18.28.15] User: Kurang lebih 50 ribu kalo ga salah
+[17/10/25, 18.28.30] papi chaee 05: Wah lumayan juga ya...
+[17/10/25, 18.28.45] User: Iya, tapi worth it kok..."
                 ></textarea>
                 <div class="absolute bottom-3 right-3 flex items-center gap-2">
-                  <span id="charCount" class="text-sm text-gray-500"
-                    >0 karakter</span
-                  >
-                  <div
-                    class="tooltip"
-                    data-tip="Minimal 50 karakter untuk hasil optimal"
-                  >
-                    <i class="bi bi-info-circle text-gray-400"></i>
+                  <span id="charCount" class="text-sm font-medium">0 karakter</span>
+                  <div class="group relative">
+                    <i class="bi bi-info-circle text-gray-400 hover:text-gray-600 cursor-pointer"></i>
+                    <div class="absolute bottom-full right-0 mb-2 hidden group-hover:block w-48 p-2 bg-gray-800 text-white text-xs rounded-lg">
+                      Minimal 50 karakter untuk hasil optimal
+                    </div>
                   </div>
                 </div>
               </div>
-              <div class="text-sm text-gray-500 flex items-center gap-1">
-                <i class="bi bi-lightbulb"></i>
-                <span>Semakin banyak teks, semakin akurat hasil analisis</span>
+              <div class="text-sm text-gray-500 flex items-center gap-2">
+                <i class="bi bi-lightbulb text-yellow-500"></i>
+                <span>Semakin banyak teks, semakin akurat hasil analisis. Coba gunakan chat grup atau percakapan panjang.</span>
               </div>
             </div>
 
@@ -198,7 +211,7 @@ Masukkan minimal 3-5 kalimat untuk hasil yang akurat..."
             <div id="fileInputArea" class="hidden space-y-4">
               <div
                 id="dropZone"
-                class="border-3 border-dashed border-gray-300 rounded-2xl p-8 text-center bg-gray-50 hover:bg-gray-100 transition-colors duration-200 cursor-pointer"
+                class="border-3 border-dashed border-gray-300 rounded-2xl p-8 text-center bg-gray-50 hover:bg-gray-100 transition-all duration-200 cursor-pointer hover:border-primary-400"
               >
                 <i class="bi bi-cloud-arrow-up text-5xl text-gray-400 mb-4"></i>
                 <p class="font-medium text-gray-700 mb-2">
@@ -216,27 +229,42 @@ Masukkan minimal 3-5 kalimat untuk hasil yang akurat..."
               </div>
               <div
                 id="fileInfo"
-                class="hidden p-4 bg-primary-50 rounded-xl border border-primary-100"
+                class="hidden p-4 bg-primary-50 rounded-xl border border-primary-100 animate-slide-up"
               >
                 <div class="flex items-center justify-between">
-                  <div>
-                    <div class="flex items-center gap-2 mb-1">
+                  <div class="flex items-center gap-3">
+                    <div class="p-2 bg-white rounded-lg">
                       <i class="bi bi-file-earmark-text text-primary-600"></i>
-                      <span
-                        id="fileName"
-                        class="font-medium text-gray-800"
-                      ></span>
                     </div>
-                    <div class="text-sm text-gray-600">
-                      <span id="fileSize"></span> • <span id="fileType"></span>
+                    <div>
+                      <div class="font-medium text-gray-800" id="fileName"></div>
+                      <div class="text-sm text-gray-600">
+                        <span id="fileSize"></span> • <span id="fileType"></span>
+                      </div>
                     </div>
                   </div>
                   <button
                     id="removeFile"
-                    class="text-red-500 hover:text-red-700"
+                    class="p-2 text-gray-500 hover:text-red-600 transition-colors"
                   >
-                    <i class="bi bi-x-circle text-xl"></i>
+                    <i class="bi bi-trash text-lg"></i>
                   </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tips Section -->
+            <div class="mt-6 p-4 bg-blue-50 rounded-xl border border-blue-100">
+              <div class="flex items-start gap-3">
+                <i class="bi bi-tips text-blue-500 mt-1"></i>
+                <div>
+                  <p class="font-medium text-blue-800 mb-1">Tips untuk Hasil Terbaik:</p>
+                  <ul class="text-sm text-blue-600 space-y-1">
+                    <li>• Gunakan chat dengan percakapan natural (bukan formal)</li>
+                    <li>• Minimal 3-5 pesan dari setiap pengguna</li>
+                    <li>• Sertakan emoji dan bahasa sehari-hari untuk akurasi lebih tinggi</li>
+                    <li>• Chat grup biasanya memberikan hasil yang lebih kaya</li>
+                  </ul>
                 </div>
               </div>
             </div>
@@ -244,102 +272,147 @@ Masukkan minimal 3-5 kalimat untuk hasil yang akurat..."
             <!-- Analyze Button -->
             <button
               id="analyzeBtn"
-              class="w-full mt-6 py-4 bg-gradient-to-r from-primary-600 to-secondary-600 hover:from-primary-700 hover:to-secondary-700 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-3"
+              class="w-full mt-6 py-4 bg-gradient-to-r from-primary-600 to-secondary-600 hover:from-primary-700 hover:to-secondary-700 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5 flex items-center justify-center gap-3 group"
             >
-              <i class="bi bi-graph-up-arrow text-xl"></i>
-              <span>Analisis Kepribadian</span>
+              <i class="bi bi-graph-up-arrow text-xl group-hover:scale-110 transition-transform"></i>
+              <span class="text-lg">Analisis Kepribadian</span>
+              <i class="bi bi-arrow-right text-xl opacity-0 group-hover:opacity-100 transition-all duration-300"></i>
             </button>
           </div>
 
           <!-- OCEAN Model Info -->
-          <div class="glass-card rounded-2xl p-6 shadow-xl">
+          <div class="glass-card rounded-2xl p-6 shadow-xl animate-slide-up">
             <div class="flex items-center gap-3 mb-6">
-              <div class="p-2 bg-secondary-100 rounded-lg">
-                <i class="bi bi-info-circle text-xl text-secondary-600"></i>
+              <div class="p-2 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-lg">
+                <i class="bi bi-info-circle text-xl text-white"></i>
               </div>
               <h3 class="text-xl font-bold text-gray-800">
                 Model OCEAN (Big Five)
               </h3>
             </div>
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
-              <div class="text-center p-3 bg-blue-50 rounded-lg">
-                <div class="text-blue-600 font-bold mb-1">O</div>
-                <div class="text-sm font-medium">Openness</div>
-                <div class="text-xs text-gray-600">Keterbukaan</div>
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+              <div class="text-center p-3 bg-gradient-to-b from-blue-50 to-white rounded-lg border border-blue-100 hover:border-blue-300 transition-colors">
+                <div class="text-blue-600 font-bold text-lg mb-1">O</div>
+                <div class="text-sm font-semibold text-gray-800">Openness</div>
+                <div class="text-xs text-gray-600 mt-1">Keterbukaan</div>
               </div>
-              <div class="text-center p-3 bg-green-50 rounded-lg">
-                <div class="text-green-600 font-bold mb-1">C</div>
-                <div class="text-sm font-medium">Conscientiousness</div>
-                <div class="text-xs text-gray-600">Kesadaran</div>
+              <div class="text-center p-3 bg-gradient-to-b from-green-50 to-white rounded-lg border border-green-100 hover:border-green-300 transition-colors">
+                <div class="text-green-600 font-bold text-lg mb-1">C</div>
+                <div class="text-sm font-semibold text-gray-800">Conscientiousness</div>
+                <div class="text-xs text-gray-600 mt-1">Kesadaran</div>
               </div>
-              <div class="text-center p-3 bg-red-50 rounded-lg">
-                <div class="text-red-600 font-bold mb-1">E</div>
-                <div class="text-sm font-medium">Extraversion</div>
-                <div class="text-xs text-gray-600">Ekstrovert</div>
+              <div class="text-center p-3 bg-gradient-to-b from-orange-50 to-white rounded-lg border border-orange-100 hover:border-orange-300 transition-colors">
+                <div class="text-orange-600 font-bold text-lg mb-1">E</div>
+                <div class="text-sm font-semibold text-gray-800">Extraversion</div>
+                <div class="text-xs text-gray-600 mt-1">Ekstrovert</div>
               </div>
-              <div class="text-center p-3 bg-yellow-50 rounded-lg">
-                <div class="text-yellow-600 font-bold mb-1">A</div>
-                <div class="text-sm font-medium">Agreeableness</div>
-                <div class="text-xs text-gray-600">Keramahan</div>
+              <div class="text-center p-3 bg-gradient-to-b from-yellow-50 to-white rounded-lg border border-yellow-100 hover:border-yellow-300 transition-colors">
+                <div class="text-yellow-600 font-bold text-lg mb-1">A</div>
+                <div class="text-sm font-semibold text-gray-800">Agreeableness</div>
+                <div class="text-xs text-gray-600 mt-1">Keramahan</div>
               </div>
-              <div class="text-center p-3 bg-purple-50 rounded-lg">
-                <div class="text-purple-600 font-bold mb-1">N</div>
-                <div class="text-sm font-medium">Neuroticism</div>
-                <div class="text-xs text-gray-600">Neurotisme</div>
+              <div class="text-center p-3 bg-gradient-to-b from-purple-50 to-white rounded-lg border border-purple-100 hover:border-purple-300 transition-colors">
+                <div class="text-purple-600 font-bold text-lg mb-1">N</div>
+                <div class="text-sm font-semibold text-gray-800">Neuroticism</div>
+                <div class="text-xs text-gray-600 mt-1">Neurotisme</div>
               </div>
             </div>
+            <p class="text-sm text-gray-600 mt-4 text-center">
+              Setiap dimensi diukur dari 0% (sangat rendah) hingga 100% (sangat tinggi)
+            </p>
           </div>
         </div>
 
         <!-- Results Panel -->
         <div class="space-y-6">
           <!-- Loading State -->
-          <div id="loading" class="glass-card rounded-2xl p-8 shadow-xl hidden">
+          <div id="loading" class="glass-card rounded-2xl p-8 shadow-xl hidden animate-fade-in">
             <div class="text-center">
-              <div
-                class="inline-block animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary-500 mb-6"
-              ></div>
+              <div class="relative inline-block mb-6">
+                <div class="absolute inset-0 animate-ping bg-primary-400 rounded-full opacity-20"></div>
+                <div
+                  class="relative animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-primary-500"
+                ></div>
+              </div>
               <h3 class="text-xl font-bold text-gray-800 mb-2">
                 Menganalisis Kepribadian...
               </h3>
-              <p class="text-gray-600">
-                Sedang memproses data dan menghasilkan insight
+              <p class="text-gray-600 mb-6">
+                Sedang memproses pola bahasa dan gaya komunikasi Anda
               </p>
-              <div class="mt-6 w-full bg-gray-200 rounded-full h-2">
+              <div class="mt-6 w-full bg-gray-200 rounded-full h-3 overflow-hidden">
                 <div
                   id="progressBar"
-                  class="bg-gradient-to-r from-primary-500 to-secondary-500 h-2 rounded-full w-0 progress-bar"
+                  class="bg-gradient-to-r from-primary-500 via-secondary-500 to-primary-500 h-3 rounded-full w-0 progress-bar animate-pulse"
                 ></div>
               </div>
-              <p id="progressText" class="text-sm text-gray-500 mt-2">
-                Memulai analisis...
-              </p>
+              <div class="flex justify-between text-sm text-gray-500 mt-2">
+                <span id="progressText">Memulai analisis...</span>
+                <span id="progressPercent">0%</span>
+              </div>
             </div>
           </div>
 
           <!-- Results Container -->
           <div id="results" class="hidden">
+            <!-- Insufficient Data Warning -->
+            <div id="insufficientWarning" class="glass-card insufficient-data rounded-2xl p-6 shadow-xl mb-6 hidden animate-slide-up">
+              <div class="flex items-start gap-3">
+                <div class="p-2 bg-yellow-100 rounded-lg">
+                  <i class="bi bi-exclamation-triangle text-xl text-yellow-600"></i>
+                </div>
+                <div>
+                  <h3 class="text-lg font-bold text-yellow-800 mb-2">Data Tidak Cukup untuk Analisis Mendalam</h3>
+                  <p class="text-yellow-700">
+                    Sistem tidak dapat mendeteksi pola kepribadian yang signifikan dari data yang diberikan. 
+                    Hal ini mungkin karena:
+                  </p>
+                  <ul class="text-sm text-yellow-700 mt-2 space-y-1">
+                    <li>• Teks terlalu pendek atau terlalu formal</li>
+                    <li>• Bahasa yang digunakan sangat singkat (1-2 kata per pesan)</li>
+                    <li>• Tidak ada pola percakapan natural yang terdeteksi</li>
+                    <li>• Format chat tidak sesuai standar analisis</li>
+                  </ul>
+                  <div class="mt-4">
+                    <button id="tryAgainBtn" class="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg font-medium transition-colors flex items-center gap-2">
+                      <i class="bi bi-arrow-clockwise"></i>
+                      <span>Coba dengan Data Berbeda</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <!-- Results Header -->
-            <div class="glass-card rounded-2xl p-6 shadow-xl mb-6">
+            <div id="resultsHeader" class="glass-card rounded-2xl p-6 shadow-xl mb-6 hidden">
               <div class="flex items-center justify-between mb-6">
                 <div class="flex items-center gap-3">
-                  <div class="p-2 bg-green-100 rounded-lg">
-                    <i class="bi bi-clipboard-data text-xl text-green-600"></i>
+                  <div class="p-2 bg-gradient-to-br from-green-500 to-secondary-500 rounded-lg">
+                    <i class="bi bi-clipboard-data text-xl text-white"></i>
                   </div>
                   <div>
                     <h2 class="text-2xl font-bold text-gray-800">
                       Hasil Analisis
                     </h2>
-                    <p class="text-gray-600 text-sm">Model OCEAN Personality</p>
+                    <p class="text-gray-600 text-sm">Model OCEAN Personality • Analisis Real-time</p>
                   </div>
                 </div>
-                <button
-                  id="downloadBtn"
-                  class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2"
-                >
-                  <i class="bi bi-download"></i>
-                  <span>Unduh</span>
-                </button>
+                <div class="flex gap-2">
+                  <button
+                    id="downloadBtn"
+                    class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2 group"
+                  >
+                    <i class="bi bi-download group-hover:animate-bounce"></i>
+                    <span>Unduh</span>
+                  </button>
+                  <button
+                    id="shareBtn"
+                    class="px-4 py-2 bg-primary-100 hover:bg-primary-200 text-primary-700 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2"
+                  >
+                    <i class="bi bi-share"></i>
+                    <span>Bagikan</span>
+                  </button>
+                </div>
               </div>
 
               <!-- Dominant Trait -->
@@ -348,8 +421,8 @@ Masukkan minimal 3-5 kalimat untuk hasil yang akurat..."
                 class="p-4 bg-gradient-to-r from-green-50 to-blue-50 rounded-xl border border-green-200"
               >
                 <div class="flex items-center gap-3">
-                  <div class="p-2 bg-white rounded-lg shadow-sm">
-                    <i class="bi bi-trophy text-2xl text-yellow-500"></i>
+                  <div class="p-3 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-lg shadow-sm">
+                    <i class="bi bi-trophy-fill text-2xl text-white"></i>
                   </div>
                   <div>
                     <p class="text-sm font-medium text-gray-600">
@@ -359,54 +432,98 @@ Masukkan minimal 3-5 kalimat untuk hasil yang akurat..."
                       id="dominantName"
                       class="text-xl font-bold text-gray-800"
                     >
-                      -
+                      Tidak Terdeteksi
                     </h3>
+                    <p class="text-sm text-gray-600" id="dominantDesc">
+                      Data tidak cukup untuk menentukan trait dominan
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
 
             <!-- Trait Scores -->
-            <div class="glass-card rounded-2xl p-6 shadow-xl mb-6">
-              <h3 class="text-xl font-bold text-gray-800 mb-6">
-                Skor Kepribadian
-              </h3>
-              <div id="scoresContainer" class="space-y-4">
-                <!-- Scores will be populated here -->
+            <div id="scoresContainer" class="glass-card rounded-2xl p-6 shadow-xl mb-6 hidden">
+              <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-bold text-gray-800">
+                  Skor Kepribadian
+                </h3>
+                <div class="text-sm text-gray-500">
+                  <span id="userCount">0</span> Pengguna Dianalisis
+                </div>
+              </div>
+              <!-- Scores will be populated here -->
+              <div id="zeroScoresMessage" class="text-center py-8">
+                <div class="inline-block p-4 bg-gray-100 rounded-full mb-4">
+                  <i class="bi bi-bar-chart text-3xl text-gray-400"></i>
+                </div>
+                <h4 class="text-lg font-semibold text-gray-700 mb-2">Belum Ada Data yang Terdeteksi</h4>
+                <p class="text-gray-600 max-w-md mx-auto">
+                  Sistem tidak dapat mengidentifikasi pola kepribadian dari data yang diberikan.
+                  Coba gunakan data percakapan yang lebih panjang dan natural.
+                </p>
               </div>
             </div>
 
             <!-- Chart -->
-            <div class="glass-card rounded-2xl p-6 shadow-xl mb-6">
+            <div id="chartContainer" class="glass-card rounded-2xl p-6 shadow-xl mb-6 hidden">
               <h3 class="text-xl font-bold text-gray-800 mb-6">
                 Visualisasi Radar
               </h3>
               <div class="chart-container">
                 <canvas id="personalityChart"></canvas>
               </div>
+              <p class="text-sm text-gray-500 text-center mt-4">
+                Grafik menunjukkan distribusi skor kepribadian pada setiap dimensi OCEAN
+              </p>
             </div>
 
             <!-- Interpretation -->
-            <div class="glass-card rounded-2xl p-6 shadow-xl">
+            <div id="interpretationContainer" class="glass-card rounded-2xl p-6 shadow-xl hidden">
               <div class="flex items-center gap-3 mb-4">
-                <div class="p-2 bg-yellow-100 rounded-lg">
-                  <i class="bi bi-lightbulb text-xl text-yellow-600"></i>
+                <div class="p-2 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-lg">
+                  <i class="bi bi-lightbulb-fill text-xl text-white"></i>
                 </div>
                 <h3 class="text-xl font-bold text-gray-800">Interpretasi</h3>
               </div>
-              <p id="interpretationText" class="text-gray-700 leading-relaxed">
-                Hasil interpretasi akan muncul di sini setelah analisis selesai.
-              </p>
+              <div class="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-lg p-4 border border-yellow-200">
+                <p id="interpretationText" class="text-gray-700 leading-relaxed">
+                  Data yang diberikan tidak cukup untuk melakukan analisis kepribadian mendalam. 
+                  Untuk hasil yang lebih akurat, coba gunakan percakapan yang lebih panjang dan mengandung 
+                  ekspresi emosi, preferensi, dan pola komunikasi yang beragam.
+                </p>
+                <div class="mt-4 pt-4 border-t border-yellow-200">
+                  <p class="text-sm font-medium text-gray-600 mb-2">Saran untuk Data yang Lebih Baik:</p>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+                    <div class="flex items-center gap-2">
+                      <i class="bi bi-check-circle text-green-500"></i>
+                      <span>Percakapan grup WhatsApp atau Discord</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <i class="bi bi-check-circle text-green-500"></i>
+                      <span>Minimal 10 pesan per pengguna</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <i class="bi bi-check-circle text-green-500"></i>
+                      <span>Gunakan bahasa sehari-hari dan emoji</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <i class="bi bi-check-circle text-green-500"></i>
+                      <span>Topik pembicaraan yang beragam</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
           <!-- Initial Placeholder -->
           <div
             id="placeholder"
-            class="glass-card rounded-2xl p-8 shadow-xl text-center"
+            class="glass-card rounded-2xl p-8 shadow-xl text-center animate-fade-in"
           >
             <div
-              class="inline-block p-4 bg-gradient-to-br from-primary-100 to-secondary-100 rounded-2xl mb-6"
+              class="inline-block p-4 bg-gradient-to-br from-primary-100 to-secondary-100 rounded-2xl mb-6 animate-pulse-slow"
             >
               <i class="bi bi-bar-chart text-4xl text-gradient"></i>
             </div>
@@ -416,20 +533,38 @@ Masukkan minimal 3-5 kalimat untuk hasil yang akurat..."
             <p class="text-gray-600 mb-6">
               Masukkan teks atau upload file chat Anda di panel sebelah kiri,
               kemudian klik tombol "Analisis Kepribadian" untuk memulai.
+              <br /><br />
+              <b class="text-primary-600">Contoh format chat yang baik:</b>
+              <div class="bg-gray-50 rounded-xl p-4 mt-3 text-left border border-gray-200">
+                <div class="text-sm font-mono space-y-1">
+                  <div class="text-blue-600">[17/10/25, 18.28.04] papi chaee 05:</div>
+                  <div class="text-gray-800">Abis berapa dm ini dit ? 🗿</div>
+                  <div class="text-green-600 mt-2">[17/10/25, 18.28.15] User:</div>
+                  <div class="text-gray-800">Kurang lebih 50 ribu kalo ga salah</div>
+                  <div class="text-blue-600 mt-2">[17/10/25, 18.28.30] papi chaee 05:</div>
+                  <div class="text-gray-800">Wah lumayan juga ya... Worth it ga tuh? 🤔</div>
+                </div>
+              </div>
             </p>
-            <div class="flex flex-wrap justify-center gap-2">
+            <div class="flex flex-wrap justify-center gap-2 mt-6">
               <span
-                class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm"
-                >Model OCEAN</span
+                class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium flex items-center gap-1"
               >
+                <i class="bi bi-cpu"></i>
+                <span>Model OCEAN</span>
+              </span>
               <span
-                class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm"
-                >Analisis Real-time</span
+                class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium flex items-center gap-1"
               >
+                <i class="bi bi-lightning-charge"></i>
+                <span>Analisis Real-time</span>
+              </span>
               <span
-                class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm"
-                >Visual Interaktif</span
+                class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-medium flex items-center gap-1"
               >
+                <i class="bi bi-eye"></i>
+                <span>Visual Interaktif</span>
+              </span>
             </div>
           </div>
         </div>
@@ -437,14 +572,15 @@ Masukkan minimal 3-5 kalimat untuk hasil yang akurat..."
 
       <!-- Footer -->
       <footer
-        class="text-center text-gray-600 text-sm pt-8 border-t border-gray-200"
+        class="text-center text-gray-600 text-sm pt-8 border-t border-gray-200 mt-12"
       >
-        <p>
+        <p class="font-medium">
+          <i class="bi bi-robot text-primary-500 mr-2"></i>
           AI Personality Detector • Analisis Kepribadian Berbasis AI • © 2024
         </p>
-        <p class="mt-1">
-          Menggunakan model OCEAN (Big Five Personality Traits) untuk analisis
-          psikologis
+        <p class="mt-2 text-gray-500">
+          Menggunakan model OCEAN (Big Five Personality Traits) untuk analisis psikologis
+          <span class="text-xs bg-gray-100 px-2 py-1 rounded-full ml-2">v1.0.0</span>
         </p>
       </footer>
     </div>
@@ -467,31 +603,39 @@ Masukkan minimal 3-5 kalimat untuk hasil yang akurat..."
       const charCount = document.getElementById("charCount");
       const progressBar = document.getElementById("progressBar");
       const progressText = document.getElementById("progressText");
+      const progressPercent = document.getElementById("progressPercent");
       const scoresContainer = document.getElementById("scoresContainer");
+      const zeroScoresMessage = document.getElementById("zeroScoresMessage");
       const interpretationText = document.getElementById("interpretationText");
+      const interpretationContainer = document.getElementById("interpretationContainer");
       const dominantName = document.getElementById("dominantName");
+      const dominantDesc = document.getElementById("dominantDesc");
       const downloadBtn = document.getElementById("downloadBtn");
+      const shareBtn = document.getElementById("shareBtn");
+      const tryAgainBtn = document.getElementById("tryAgainBtn");
+      const insufficientWarning = document.getElementById("insufficientWarning");
+      const resultsHeader = document.getElementById("resultsHeader");
+      const chartContainer = document.getElementById("chartContainer");
+      const userCount = document.getElementById("userCount");
 
       let personalityChart = null;
       let currentFile = null;
 
       // Initialize
       document.addEventListener("DOMContentLoaded", () => {
-        // Set sample text
-        chatText.value = `Hari ini saya merasa sangat bersemangat untuk memulai proyek baru. Saya telah menyusun rencana yang detail dan timeline yang jelas.
-
-Saya senang bisa berkolaborasi dengan tim yang solid. Diskusi dengan rekan kerja selalu memberikan ide-ide segar.
-
-Kadang saya merasa sedikit cemas tentang deadline, tapi pengalaman sebelumnya menunjukkan bahwa dengan kerja keras, semua akan berhasil.
-
-Saya terbuka untuk mencoba teknologi baru yang bisa mempercepat pekerjaan kami. Inovasi selalu menarik bagi saya.
-
-Saya percaya kerjasama tim adalah kunci sukses, jadi saya selalu berusaha mendengarkan masukan dari semua anggota tim.`;
-
         updateCharCount();
-
-        // Add event listeners
         setupEventListeners();
+        
+        // Pre-fill with sample data for testing
+        chatText.value = `[17/10/25, 18.28.04] papi chaee 05: Abis berapa dm ini dit ? 🗿
+[17/10/25, 18.28.15] User: Kurang lebih 50 ribu kalo ga salah
+[17/10/25, 18.28.30] papi chaee 05: Wah lumayan juga ya... Worth it ga tuh? 🤔
+[17/10/25, 18.28.45] User: Iya, tapi worth it kok. Fiturnya lengkap banget
+[17/10/25, 18.29.00] papi chaee 05: Hmm okelah kalo gitu. Gua mikir dulu ya bro
+[17/10/25, 18.29.15] User: Sip, lu mau coba fitur apa dulu nih?
+[17/10/25, 18.29.30] papi chaee 05: Yang basic dulu aja, biar ga overwhelmed wkwk`;
+        
+        updateCharCount();
       });
 
       // Setup all event listeners
@@ -499,7 +643,7 @@ Saya percaya kerjasama tim adalah kunci sukses, jadi saya selalu berusaha menden
         // Input method toggle
         textBtn.addEventListener("click", () => {
           textBtn.className =
-            "flex-1 py-3 px-4 flex items-center justify-center gap-2 font-medium transition-all duration-200 bg-primary-600 text-white";
+            "flex-1 py-3 px-4 flex items-center justify-center gap-2 font-medium transition-all duration-200 bg-primary-600 text-white hover:bg-primary-700";
           fileBtn.className =
             "flex-1 py-3 px-4 flex items-center justify-center gap-2 font-medium transition-all duration-200 bg-gray-100 text-gray-600 hover:bg-gray-200";
           textInputArea.classList.remove("hidden");
@@ -508,7 +652,7 @@ Saya percaya kerjasama tim adalah kunci sukses, jadi saya selalu berusaha menden
 
         fileBtn.addEventListener("click", () => {
           fileBtn.className =
-            "flex-1 py-3 px-4 flex items-center justify-center gap-2 font-medium transition-all duration-200 bg-primary-600 text-white";
+            "flex-1 py-3 px-4 flex items-center justify-center gap-2 font-medium transition-all duration-200 bg-primary-600 text-white hover:bg-primary-700";
           textBtn.className =
             "flex-1 py-3 px-4 flex items-center justify-center gap-2 font-medium transition-all duration-200 bg-gray-100 text-gray-600 hover:bg-gray-200";
           fileInputArea.classList.remove("hidden");
@@ -523,16 +667,16 @@ Saya percaya kerjasama tim adalah kunci sukses, jadi saya selalu berusaha menden
 
         dropZone.addEventListener("dragover", (e) => {
           e.preventDefault();
-          dropZone.classList.add("border-primary-500", "bg-primary-50");
+          dropZone.classList.add("border-primary-500", "bg-primary-50", "border-2");
         });
 
         dropZone.addEventListener("dragleave", () => {
-          dropZone.classList.remove("border-primary-500", "bg-primary-50");
+          dropZone.classList.remove("border-primary-500", "bg-primary-50", "border-2");
         });
 
         dropZone.addEventListener("drop", (e) => {
           e.preventDefault();
-          dropZone.classList.remove("border-primary-500", "bg-primary-50");
+          dropZone.classList.remove("border-primary-500", "bg-primary-50", "border-2");
 
           if (e.dataTransfer.files.length) {
             handleFileSelect(e.dataTransfer.files[0]);
@@ -556,6 +700,16 @@ Saya percaya kerjasama tim adalah kunci sukses, jadi saya selalu berusaha menden
 
         // Download button
         downloadBtn.addEventListener("click", downloadResults);
+
+        // Share button
+        shareBtn.addEventListener("click", shareResults);
+
+        // Try again button
+        tryAgainBtn.addEventListener("click", () => {
+          insufficientWarning.classList.add("hidden");
+          placeholder.classList.remove("hidden");
+          results.classList.add("hidden");
+        });
       }
 
       // Update character count
@@ -564,14 +718,11 @@ Saya percaya kerjasama tim adalah kunci sukses, jadi saya selalu berusaha menden
         charCount.textContent = `${count} karakter`;
 
         if (count < 50) {
-          charCount.classList.add("text-red-500");
-          charCount.classList.remove("text-yellow-500", "text-green-500");
+          charCount.className = "text-sm font-medium text-red-500";
         } else if (count < 150) {
-          charCount.classList.remove("text-red-500", "text-green-500");
-          charCount.classList.add("text-yellow-500");
+          charCount.className = "text-sm font-medium text-yellow-500";
         } else {
-          charCount.classList.remove("text-red-500", "text-yellow-500");
-          charCount.classList.add("text-green-500");
+          charCount.className = "text-sm font-medium text-green-500";
         }
       }
 
@@ -603,49 +754,63 @@ Saya percaya kerjasama tim adalah kunci sukses, jadi saya selalu berusaha menden
 
       // Start analysis
       function startAnalysis() {
-        // Validate input
-        if (textBtn.classList.contains("bg-primary-600")) {
-          if (chatText.value.trim().length < 30) {
-            alert(
-              "Mohon masukkan minimal 30 karakter untuk analisis yang akurat."
-            );
+        // Validasi input
+        let formData = new FormData();
+        let isTextMode = textBtn.classList.contains("bg-primary-600");
+        
+        if (isTextMode) {
+          let text = chatText.value.trim();
+          if (text.length < 30) {
+            showNotification("Mohon masukkan minimal 30 karakter untuk analisis yang akurat.", "error");
             return;
           }
+          formData.append("text", text);
         } else {
           if (!currentFile) {
-            alert("Mohon pilih file untuk dianalisis.");
+            showNotification("Mohon pilih file untuk dianalisis.", "error");
             return;
           }
+          formData.append("file", currentFile);
         }
 
-        // Show loading, hide other elements
+        // Tampilkan loading
         loading.classList.remove("hidden");
         results.classList.add("hidden");
         placeholder.classList.add("hidden");
-
-        // Simulate progress
         simulateProgress();
 
-        // Simulate analysis (in real app, this would be an API call)
-        setTimeout(() => {
-          const text = textBtn.classList.contains("bg-primary-600")
-            ? chatText.value
-            : "Sample chat text from file analysis...";
-
-          const results = generateMockResults(text);
-          displayResults(results);
-        }, 2500);
+        // KIRIM REQUEST KE BACKEND (bukan simulasi!)
+        fetch("/analyze", {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then((data) => {
+            console.log("Backend response:", data); // Debug log
+            displayResults(data);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            showNotification("Terjadi error saat mengirim request: " + error.message, "error");
+            loading.classList.add("hidden");
+            placeholder.classList.remove("hidden");
+          });
       }
 
       // Simulate progress bar
       function simulateProgress() {
         let progress = 0;
         const steps = [
-          "Memproses teks...",
-          "Menganalisis pola bahasa...",
-          "Menghitung skor OCEAN...",
-          "Membuat visualisasi...",
-          "Menyiapkan hasil...",
+          { text: "Memproses teks...", percent: 20 },
+          { text: "Menganalisis pola bahasa...", percent: 40 },
+          { text: "Menghitung skor OCEAN...", percent: 60 },
+          { text: "Membuat visualisasi...", percent: 80 },
+          { text: "Menyiapkan hasil...", percent: 95 },
         ];
 
         const interval = setInterval(() => {
@@ -653,12 +818,14 @@ Saya percaya kerjasama tim adalah kunci sukses, jadi saya selalu berusaha menden
           if (progress > 100) progress = 100;
 
           progressBar.style.width = `${progress}%`;
+          progressPercent.textContent = `${Math.floor(progress)}%`;
 
           // Update progress text based on progress
-          const stepIndex = Math.floor(progress / 20);
-          if (stepIndex < steps.length) {
-            progressText.textContent = steps[stepIndex];
-          }
+          steps.forEach(step => {
+            if (progress >= step.percent && progress < step.percent + 20) {
+              progressText.textContent = step.text;
+            }
+          });
 
           if (progress >= 100) {
             clearInterval(interval);
@@ -667,280 +834,440 @@ Saya percaya kerjasama tim adalah kunci sukses, jadi saya selalu berusaha menden
         }, 200);
       }
 
-      // Generate mock results (replace with actual API call)
-      function generateMockResults(text) {
-        const textLower = text.toLowerCase();
-
-        // Calculate scores based on keywords (simplified)
-        const calculateScore = (keywords, base) => {
-          let score = base;
-          keywords.forEach((keyword) => {
-            if (textLower.includes(keyword)) score += 0.05;
-          });
-          return Math.min(0.95, Math.max(0.05, score));
-        };
-
-        const scores = {
-          openness: calculateScore(
-            ["baru", "kreatif", "inovasi", "coba", "eksplorasi", "terbuka"],
-            0.65
-          ),
-          conscientiousness: calculateScore(
-            [
-              "rencana",
-              "disiplin",
-              "tepat waktu",
-              "detail",
-              "organisasi",
-              "tanggung jawab",
-            ],
-            0.75
-          ),
-          extraversion: calculateScore(
-            ["teman", "sosial", "tim", "kelompok", "diskusi", "berinteraksi"],
-            0.55
-          ),
-          agreeableness: calculateScore(
-            ["bantu", "kerja sama", "tim", "dengarkan", "harmoni", "peduli"],
-            0.7
-          ),
-          neuroticism: calculateScore(
-            ["cemas", "khawatir", "stres", "takut", "ragu", "gugup"],
-            0.4
-          ),
-        };
-
-        // Find dominant trait
-        const traits = Object.keys(scores);
-        const dominantTrait = traits.reduce((a, b) =>
-          scores[a] > scores[b] ? a : b
-        );
-
-        // Trait names and descriptions
-        const traitInfo = {
-          openness: {
-            name: "Openness",
-            idName: "Keterbukaan",
-            desc: "Tingkat keterbukaan terhadap pengalaman baru, imajinasi, dan ide-ide abstrak.",
-            icon: "bi-globe2",
-            color: "blue",
-          },
-          conscientiousness: {
-            name: "Conscientiousness",
-            idName: "Kesadaran",
-            desc: "Tingkat keteraturan, tanggung jawab, dan keandalan dalam bekerja.",
-            icon: "bi-check2-circle",
-            color: "green",
-          },
-          extraversion: {
-            name: "Extraversion",
-            idName: "Ekstrovert",
-            desc: "Tingkat kenyamanan dalam interaksi sosial dan kecenderungan mencari stimulasi sosial.",
-            icon: "bi-people",
-            color: "red",
-          },
-          agreeableness: {
-            name: "Agreeableness",
-            idName: "Keramahan",
-            desc: "Tingkat keramahan, kerjasama, dan kepercayaan terhadap orang lain.",
-            icon: "bi-heart",
-            color: "yellow",
-          },
-          neuroticism: {
-            name: "Neuroticism",
-            idName: "Neurotisme",
-            desc: "Tingkat ketidakstabilan emosional dan kecenderungan mengalami emosi negatif.",
-            icon: "bi-shield-exclamation",
-            color: "purple",
-          },
-        };
-
-        // Generate interpretation
-        const interpretations = {
-          openness:
-            "Anda menunjukkan tingkat keterbukaan yang tinggi terhadap pengalaman baru. Pola komunikasi Anda mencerminkan kreativitas, keingintahuan intelektual, dan apresiasi terhadap keindahan.",
-          conscientiousness:
-            "Anda memiliki kesadaran dan disiplin yang kuat. Pola komunikasi Anda menunjukkan keteraturan, tanggung jawab, dan orientasi pada pencapaian tujuan.",
-          extraversion:
-            "Anda cenderung ekstrovert dan nyaman dengan interaksi sosial. Pola komunikasi Anda menunjukkan energi positif dan kecenderungan untuk terlibat dengan lingkungan sosial.",
-          agreeableness:
-            "Anda menunjukkan tingkat keramahan dan empati yang tinggi. Pola komunikasi Anda mencerminkan kepercayaan, altruisme, dan kecenderungan untuk bekerjasama.",
-          neuroticism:
-            "Anda menunjukkan kecenderungan mengalami emosi negatif seperti kecemasan. Pola komunikasi Anda mencerminkan sensitivitas terhadap stres dan ketidakpastian.",
-        };
-
-        return {
-          scores,
-          dominant: dominantTrait,
-          traitInfo,
-          interpretation:
-            interpretations[dominantTrait] ||
-            "Analisis menunjukkan profil kepribadian yang seimbang.",
-        };
-      }
-
       // Display results
       function displayResults(data) {
+        console.log("Received data:", data);
+
         if (!data.success) {
-          alert(data.error);
+          showNotification("Analisis gagal: " + (data.error || "Terjadi kesalahan"), "error");
+          loading.classList.add("hidden");
+          placeholder.classList.remove("hidden");
           return;
         }
-        const resultsDiv = document.getElementById("results");
-        resultsDiv.innerHTML = "";
-        for (const [name, scores] of Object.entries(data.results)) {
-          resultsDiv.innerHTML += `<h3>${name}</h3>
-          <ul>
-            <li>Openness: ${scores.openness}</li>
-            <li>Conscientiousness: ${scores.conscientiousness}</li>
-            <li>Extraversion: ${scores.extraversion}</li>
-            <li>Agreeableness: ${scores.agreeableness}</li>
-            <li>Neuroticism: ${scores.neuroticism}</li>
-          </ul>`;
-          // Tambahkan radar chart per user jika mau (gunakan Chart.js)
+
+        // Hide loading
+        loading.classList.add("hidden");
+        results.classList.remove("hidden");
+
+        // Check if results exist and have valid data
+        if (!data.results || Object.keys(data.results).length === 0) {
+          showInsufficientData(data);
+          return;
         }
+
+        // Check if all scores are 0 for all users
+        const allScoresZero = Object.values(data.results).every(userScores => {
+          // Make sure userScores is an object with OCEAN traits
+          if (typeof userScores !== 'object' || userScores === null) {
+            return true;
+          }
+          
+          // Check if all OCEAN scores are 0
+          const oceanTraits = ['openness', 'conscientiousness', 'extraversion', 'agreeableness', 'neuroticism'];
+          const hasValidScores = oceanTraits.some(trait => {
+            const score = userScores[trait];
+            return typeof score === 'number' && score > 0;
+          });
+          
+          return !hasValidScores;
+        });
+
+        console.log("All scores zero:", allScoresZero); // Debug log
+
+        if (allScoresZero) {
+          showInsufficientData(data);
+          return;
+        }
+
+        showResults(data);
       }
 
-      // Create radar chart
-      function createChart(scores, traitInfo) {
-        const ctx = document
-          .getElementById("personalityChart")
-          .getContext("2d");
+      // Show insufficient data warning
+      function showInsufficientData(data) {
+        console.log("Showing insufficient data warning for:", data); // Debug log
+        
+        // Create insufficient data message
+        const insufficientHTML = `
+          <div class="glass-card rounded-2xl p-8 shadow-xl text-center">
+            <div class="inline-block p-4 bg-yellow-100 rounded-2xl mb-6">
+              <i class="bi bi-exclamation-triangle text-4xl text-yellow-600"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">
+              Data Tidak Cukup untuk Analisis
+            </h3>
+            <p class="text-gray-600 mb-6 max-w-lg mx-auto leading-relaxed">
+              Model AI mendeteksi bahwa teks yang diberikan tidak mengandung cukup indikator 
+              kepribadian untuk menghasilkan analisis yang akurat.
+            </p>
+            <div class="bg-blue-50 rounded-xl p-4 mb-6">
+              <h4 class="font-semibold text-gray-800 mb-2">
+                <i class="bi bi-lightbulb text-blue-600 mr-2"></i>
+                Tips untuk Analisis yang Lebih Baik:
+              </h4>
+              <ul class="text-sm text-gray-700 space-y-1 text-left max-w-md mx-auto">
+                <li>• Gunakan percakapan yang lebih panjang (minimal 100-200 kata)</li>
+                <li>• Sertakan berbagai topik pembicaraan</li>
+                <li>• Pastikan teks mengandung ekspresi emosi dan preferensi</li>
+                <li>• Coba dengan chat grup atau percakapan multi-user</li>
+              </ul>
+            </div>
+            <div class="flex justify-center gap-4">
+              <button onclick="document.getElementById('placeholder').classList.remove('hidden'); document.getElementById('results').classList.add('hidden');" 
+                      class="px-6 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors">
+                <i class="bi bi-arrow-left mr-2"></i>
+                Coba Lagi
+              </button>
+            </div>
+          </div>
+        `;
+        
+        document.getElementById('results').innerHTML = insufficientHTML;
+        showNotification("Data tidak cukup untuk analisis mendalam. Coba dengan teks yang lebih panjang.", "warning");
+      }
 
-        // Destroy previous chart if exists
+      // Show full results
+      function showResults(data) {
+        let resultsHTML = '';
+        
+        // Process each user's results
+        Object.entries(data.results).forEach(([userName, scores]) => {
+          resultsHTML += createScoreCard(userName, scores);
+        });
+        
+        results.innerHTML = resultsHTML;
+        
+        // Show success notification
+        const userCount = Object.keys(data.results).length;
+        showNotification(`Analisis selesai untuk ${userCount} pengguna!`, "success");
+      }
+
+      // Create score card for a user
+      function createScoreCard(userName, scores) {
+        const card = document.createElement('div');
+        card.className = 'mb-6 p-6 bg-gradient-to-br from-gray-50 to-white rounded-xl border border-gray-200 hover:border-primary-300 transition-all duration-300 animate-slide-up';
+        
+        // Trait information
+        const traitInfo = {
+          openness: { name: "Openness", idName: "Keterbukaan", color: "#3b82f6", icon: "bi-globe2" },
+          conscientiousness: { name: "Conscientiousness", idName: "Kesadaran", color: "#22c55e", icon: "bi-check2-circle" },
+          extraversion: { name: "Extraversion", idName: "Ekstrovert", color: "#f97316", icon: "bi-people" },
+          agreeableness: { name: "Agreeableness", idName: "Keramahan", color: "#eab308", icon: "bi-heart" },
+          neuroticism: { name: "Neuroticism", idName: "Neurotisme", color: "#a855f7", icon: "bi-shield-exclamation" }
+        };
+
+        // Calculate average score
+        const totalScore = Object.values(scores).reduce((a, b) => a + b, 0);
+        const averageScore = totalScore / Object.keys(scores).length;
+
+        // Get score bars HTML
+        const scoreBars = Object.entries(scores).map(([trait, score]) => {
+          const info = traitInfo[trait];
+          const percentage = Math.round(score * 100);
+          const width = percentage + '%';
+
+          let colorClass = 'bg-gray-400';
+          let textClass = 'text-gray-600';
+
+          if (percentage > 66) {
+            colorClass = 'bg-green-500';
+            textClass = 'text-green-600';
+          } else if (percentage > 33) {
+            colorClass = 'bg-yellow-400';
+            textClass = 'text-yellow-600';
+          } else if (percentage > 0) {
+            colorClass = 'bg-orange-400';
+            textClass = 'text-orange-600';
+          }
+
+          return `
+            <div class="mb-2">
+              <div class="flex justify-between items-center mb-1">
+                <span class="font-medium ${textClass}"><i class="bi ${info.icon} mr-1"></i>${info.idName}</span>
+                <span class="font-bold ${textClass}">${percentage}%</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-3">
+                <div class="${colorClass} h-3 rounded-full" style="width: ${width};"></div>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        return `
+          <div class="mb-6 p-6 bg-gradient-to-br from-gray-50 to-white rounded-xl border border-gray-200 hover:border-primary-300 transition-all duration-300 animate-slide-up">
+            <div class="flex items-center justify-between mb-4">
+              <span class="font-bold text-lg text-primary-700">${userName}</span>
+              <span class="text-sm text-gray-500">Rata-rata: ${averageScore.toFixed(2)}</span>
+            </div>
+            <div class="space-y-1">
+              ${scoreBars}
+            </div>
+          </div>
+        `;
+      }
+
+      // Create personality radar chart
+      function createPersonalityChart(scores) {
+        const ctx = document.getElementById('personalityChart').getContext('2d');
+        
+        // Destroy existing chart if exists
         if (personalityChart) {
           personalityChart.destroy();
         }
 
-        const colorMap = {
-          openness: "#3b82f6",
-          conscientiousness: "#10b981",
-          extraversion: "#ef4444",
-          agreeableness: "#f59e0b",
-          neuroticism: "#8b5cf6",
-        };
+        const labels = ['Keterbukaan', 'Kesadaran', 'Ekstrovert', 'Keramahan', 'Neurotisme'];
+        const data = [
+          scores.openness * 100,
+          scores.conscientiousness * 100,
+          scores.extraversion * 100,
+          scores.agreeableness * 100,
+          scores.neuroticism * 100
+        ];
 
         personalityChart = new Chart(ctx, {
-          type: "radar",
+          type: 'radar',
           data: {
-            labels: Object.keys(scores).map((t) => traitInfo[t].name),
-            datasets: [
-              {
-                label: "Skor Kepribadian",
-                data: Object.values(scores).map((s) => s * 100),
-                backgroundColor: "rgba(59, 130, 246, 0.1)",
-                borderColor: "#3b82f6",
-                pointBackgroundColor: Object.keys(scores).map(
-                  (t) => colorMap[t]
-                ),
-                pointBorderColor: "#fff",
-                pointHoverBackgroundColor: "#fff",
-                pointHoverBorderColor: "#3b82f6",
-                borderWidth: 2,
-                pointRadius: 4,
-              },
-            ],
+            labels: labels,
+            datasets: [{
+              label: 'Skor Kepribadian',
+              data: data,
+              backgroundColor: 'rgba(59, 130, 246, 0.2)',
+              borderColor: 'rgb(59, 130, 246)',
+              borderWidth: 2,
+              pointBackgroundColor: 'rgb(59, 130, 246)',
+              pointBorderColor: '#fff',
+              pointBorderWidth: 2,
+              pointRadius: 6,
+              pointHoverRadius: 8
+            }]
           },
           options: {
             responsive: true,
             maintainAspectRatio: false,
-            scales: {
-              r: {
-                angleLines: {
-                  color: "rgba(0, 0, 0, 0.1)",
-                },
-                grid: {
-                  color: "rgba(0, 0, 0, 0.05)",
-                },
-                pointLabels: {
-                  font: {
-                    size: 14,
-                    family: "'Inter', 'system-ui', 'sans-serif'",
-                    weight: "600",
-                  },
-                  color: "#374151",
-                },
-                ticks: {
-                  backdropColor: "transparent",
-                  font: {
-                    size: 11,
-                  },
-                  color: "#6b7280",
-                  callback: function (value) {
-                    return value + "%";
-                  },
-                },
-                suggestedMin: 0,
-                suggestedMax: 100,
-              },
-            },
             plugins: {
               legend: {
-                display: false,
+                display: false
               },
               tooltip: {
                 callbacks: {
-                  label: function (context) {
-                    const trait = Object.keys(scores)[context.dataIndex];
-                    return `${traitInfo[trait].idName}: ${context.raw.toFixed(
-                      1
-                    )}%`;
-                  },
+                  label: function(context) {
+                    return context.dataset.label + ': ' + context.raw.toFixed(1) + '%';
+                  }
+                }
+              }
+            },
+            scales: {
+              r: {
+                beginAtZero: true,
+                max: 100,
+                min: 0,
+                ticks: {
+                  stepSize: 20,
+                  callback: function(value) {
+                    return value + '%';
+                  }
                 },
-              },
+                grid: {
+                  color: 'rgba(0, 0, 0, 0.1)'
+                },
+                angleLines: {
+                  color: 'rgba(0, 0, 0, 0.1)'
+                },
+                pointLabels: {
+                  font: {
+                    size: 13,
+                    weight: '600'
+                  },
+                  color: '#4b5563'
+                }
+              }
             },
-            animation: {
-              duration: 2000,
-              easing: "easeOutQuart",
-            },
-          },
+            elements: {
+              line: {
+                tension: 0.3
+              }
+            }
+          }
         });
+      }
+
+      // Calculate dominant trait
+      function calculateDominantTrait(scores) {
+        const traits = [
+          { key: 'openness', name: 'Openness', idName: 'Keterbukaan' },
+          { key: 'conscientiousness', name: 'Conscientiousness', idName: 'Kesadaran' },
+          { key: 'extraversion', name: 'Extraversion', idName: 'Ekstrovert' },
+          { key: 'agreeableness', name: 'Agreeableness', idName: 'Keramahan' },
+          { key: 'neuroticism', name: 'Neuroticism', idName: 'Neurotisme' }
+        ];
+
+        let maxScore = -1;
+        let dominant = traits[0];
+
+        traits.forEach(trait => {
+          if (scores[trait.key] > maxScore) {
+            maxScore = scores[trait.key];
+            dominant = trait;
+          }
+        });
+
+        const descriptions = {
+          openness: "Anda menunjukkan minat terhadap ide-ide baru, kreativitas, dan pengalaman yang berbeda.",
+          conscientiousness: "Anda cenderung terorganisir, bertanggung jawab, dan dapat diandalkan.",
+          extraversion: "Anda energik, senang bersosialisasi, dan mendapatkan energi dari interaksi sosial.",
+          agreeableness: "Anda kooperatif, peduli dengan orang lain, dan menghindari konflik.",
+          neuroticism: "Anda lebih sensitif terhadap stres dan cenderung mengalami emosi negatif."
+        };
+
+        return {
+          name: dominant.idName,
+          description: maxScore > 0 ? descriptions[dominant.key] : "Trait tidak terdeteksi dengan jelas"
+        };
+      }
+
+      // Generate interpretation text
+      function generateInterpretation(scores) {
+        const interpretations = [];
+        
+        if (scores.openness > 0.6) {
+          interpretations.push("Anda menunjukkan keterbukaan yang tinggi terhadap pengalaman baru.");
+        } else if (scores.openness > 0.3) {
+          interpretations.push("Anda cenderung moderat dalam mencoba hal-hal baru.");
+        }
+        
+        if (scores.conscientiousness > 0.6) {
+          interpretations.push("Sikap Anda yang terorganisir dan bertanggung jawab sangat menonjol.");
+        } else if (scores.conscientiousness > 0.3) {
+          interpretations.push("Anda memiliki tingkat kesadaran yang cukup baik.");
+        }
+        
+        if (scores.extraversion > 0.6) {
+          interpretations.push("Anda tampak sebagai pribadi yang sosial dan energik.");
+        } else if (scores.extraversion > 0.3) {
+          interpretations.push("Anda memiliki keseimbangan antara waktu sosial dan pribadi.");
+        }
+        
+        if (scores.agreeableness > 0.6) {
+          interpretations.push("Keramahan dan empati Anda sangat terlihat dalam komunikasi.");
+        } else if (scores.agreeableness > 0.3) {
+          interpretations.push("Anda menunjukkan sikap yang cukup kooperatif.");
+        }
+        
+        if (scores.neuroticism > 0.6) {
+          interpretations.push("Anda mungkin lebih sensitif terhadap situasi yang menegangkan.");
+        } else if (scores.neuroticism > 0.3) {
+          interpretations.push("Stabilitas emosional Anda cukup baik.");
+        }
+
+        if (interpretations.length === 0) {
+          return "Data yang diberikan terlalu terbatas untuk memberikan interpretasi yang mendalam. Coba gunakan data percakapan yang lebih panjang untuk hasil yang lebih akurat.";
+        }
+
+        return interpretations.join(' ') + ' Pola komunikasi Anda mencerminkan karakteristik kepribadian yang unik berdasarkan analisis model OCEAN.';
       }
 
       // Download results
       function downloadResults() {
         const data = {
-          title: "AI Personality Detector Results",
-          date: new Date().toISOString(),
-          scores: {},
-          interpretation: interpretationText.textContent,
+          title: "AI Personality Detector - Hasil Analisis",
+          date: new Date().toLocaleString('id-ID'),
+          analysis: "Model OCEAN (Big Five Personality Traits)",
+          summary: "Hasil analisis kepribadian berdasarkan pola komunikasi",
+          results: {}
         };
 
-        // Collect scores from DOM
-        document.querySelectorAll("#scoresContainer > div").forEach((div) => {
-          const name = div.querySelector("h4").textContent;
-          const score = div
-            .querySelector(".text-2xl")
-            .textContent.replace("%", "");
-          data.scores[name] = parseFloat(score);
+        // Collect data from current display
+        const scoreCards = document.querySelectorAll('#scoresContainer > div:not(#zeroScoresMessage)');
+        scoreCards.forEach(card => {
+          const userName = card.querySelector('h4').textContent;
+          const scores = {};
+          
+          card.querySelectorAll('.mb-4').forEach(scoreElement => {
+            const traitName = scoreElement.querySelector('.font-medium').textContent;
+            const percentage = parseInt(scoreElement.querySelector('.font-bold').textContent);
+            scores[traitName] = percentage;
+          });
+          
+          data.results[userName] = scores;
         });
+
+        data.interpretation = interpretationText.textContent;
+        data.dominantTrait = dominantName.textContent;
 
         // Create download
         const dataStr = JSON.stringify(data, null, 2);
-        const dataBlob = new Blob([dataStr], { type: "application/json" });
+        const dataBlob = new Blob([dataStr], { type: 'application/json' });
         const url = URL.createObjectURL(dataBlob);
 
-        const a = document.createElement("a");
+        const a = document.createElement('a');
         a.href = url;
-        a.download = `personality-analysis-${new Date()
-          .toISOString()
-          .slice(0, 10)}.json`;
+        a.download = `personality-analysis-${new Date().toISOString().slice(0, 10)}.json`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
 
         // Show feedback
-        const originalHTML = downloadBtn.innerHTML;
-        downloadBtn.innerHTML =
-          '<i class="bi bi-check2"></i><span>Terunduh!</span>';
-        downloadBtn.className =
-          "px-4 py-2 bg-green-100 hover:bg-green-200 text-green-700 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2";
+        showNotification("Hasil berhasil diunduh!", "success");
+      }
+
+      // Share results
+// Fix untuk shareResults function
+function shareResults() {
+  // Safely get dominant trait text
+  let dominantText = "Tidak Diketahui";
+  try {
+    if (dominantName && dominantName.textContent) {
+      dominantText = dominantName.textContent;
+    }
+  } catch (e) {
+    console.log('Error getting dominant trait:', e);
+  }
+  
+  const shareText = `Hasil Analisis Kepribadian OCEAN:\nTrait Dominan: ${dominantText}\n\nLihat detail lengkapnya di AI Personality Detector`;
+  
+  if (navigator.share) {
+    navigator.share({
+      title: 'Hasil Analisis Kepribadian',
+      text: shareText,
+      url: window.location.href
+    }).catch(err => console.log('Error sharing:', err));
+  } else {
+    // Fallback for browsers that don't support Web Share API
+    navigator.clipboard.writeText(shareText + '\n' + window.location.href)
+      .then(() => showNotification("Tautan disalin ke clipboard!", "success"))
+      .catch(() => showNotification("Gagal membagikan hasil", "error"));
+  }
+}
+
+      // Show notification
+      function showNotification(message, type = 'info') {
+        const types = {
+          success: { bg: 'bg-green-500', icon: 'bi-check-circle' },
+          error: { bg: 'bg-red-500', icon: 'bi-exclamation-circle' },
+          warning: { bg: 'bg-yellow-500', icon: 'bi-exclamation-triangle' },
+          info: { bg: 'bg-blue-500', icon: 'bi-info-circle' }
+        };
+
+        const notification = document.createElement('div');
+        notification.className = `fixed top-4 right-4 text-white px-4 py-3 rounded-lg shadow-lg animate-slide-up z-50 ${types[type].bg}`;
+        notification.innerHTML = `
+          <div class="flex items-center gap-3">
+            <i class="bi ${types[type].icon} text-xl"></i>
+            <span>${message}</span>
+          </div>
+        `;
+
+        document.body.appendChild(notification);
 
         setTimeout(() => {
-          downloadBtn.innerHTML = originalHTML;
-          downloadBtn.className =
-            "px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2";
-        }, 2000);
+          notification.classList.remove('animate-slide-up');
+          notification.classList.add('animate-fade-in');
+          setTimeout(() => {
+            if (document.body.contains(notification)) {
+              document.body.removeChild(notification);
+            }
+          }, 300);
+        }, 3000);
       }
     </script>
   </body>

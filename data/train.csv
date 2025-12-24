@@ -1,0 +1,201 @@
+id,name,text,openness,conscientiousness,extraversion,agreeableness,neuroticism
+10,User_O_10,Saya senang bereksperimen dengan pendekatan berbeda,1,0,0,0,0
+99,User_E_19,Saya mudah memotivasi dan menginspirasi orang lain,0,0,1,0,0
+155,User_A_35,Saya tidak terlalu mudah sympathize dengan drama orang lain,0,0,0,0,0
+173,User_N_13,Saya mudah frustrated saat sesuatu tidak sesuai rencana,0,0,0,0,1
+33,User_O_33,Saya lebih memilih aktivitas yang konkret dan jelas,0,0,0,0,0
+46,User_C_6,Saya memiliki sistem filing yang rapi dan teratur,0,1,0,0,0
+84,User_E_4,Saya suka menjadi pusat perhatian dalam diskusi,0,0,1,0,0
+130,User_A_10,Saya selalu berusaha fair dan adil dalam berinteraksi,0,0,0,1,0
+29,User_O_29,Saya merasa lebih aman dengan hal-hal yang familiar,0,0,0,0,0
+191,User_N_31,Saya tidak mudah anxious dalam situasi baru,0,0,0,0,0
+118,User_E_38,Saya lebih memilih bekerja di belakang layar,0,0,0,0,0
+157,User_A_37,Saya tidak terlalu suka dengan consensus building yang lama,0,0,0,0,0
+108,User_E_28,Saya merasa lelah setelah interaksi sosial yang intens,0,0,0,0,0
+62,User_C_22,Saya kurang terorganisir dalam mengatur jadwal,0,0,0,0,0
+37,User_O_37,Saya lebih suka mengikuti aturan yang sudah ditetapkan,0,0,0,0,0
+178,User_N_18,Saya sering restless dan sulit relax,0,0,0,0,1
+165,User_N_5,Saya sering merasa anxious dalam situasi baru,0,0,0,0,1
+41,User_C_1,Saya selalu menyelesaikan pekerjaan tepat waktu,0,1,0,0,0
+149,User_A_29,Saya tidak terlalu mudah influenced oleh opinion orang lain,0,0,0,0,0
+87,User_E_7,Saya senang berbagi cerita dan pengalaman,0,0,1,0,0
+77,User_C_37,Saya kadang tidak thorough dalam review hasil,0,0,0,0,0
+128,User_A_8,Saya peduli dengan kesejahteraan dan perasaan orang lain,0,0,0,1,0
+187,User_N_27,Saya relaxed dan easy-going dalam berinteraksi,0,0,0,0,0
+56,User_C_16,Saya konsisten dalam menjaga kualitas output,0,1,0,0,0
+35,User_O_35,Saya lebih nyaman dengan lingkungan yang stabil,0,0,0,0,0
+81,User_E_1,Saya senang berinteraksi dan ngobrol dengan banyak orang,0,0,1,0,0
+144,User_A_24,Saya lebih suka berkompetisi daripada berkolaborasi,0,0,0,0,0
+133,User_A_13,Saya selalu considerate terhadap kebutuhan orang lain,0,0,0,1,0
+166,User_N_6,Saya mudah mood swing dan emotional,0,0,0,0,1
+175,User_N_15,Saya sering worrying tentang pendapat orang lain,0,0,0,0,1
+98,User_E_18,Saya suka mengorganisir acara atau gathering,0,0,1,0,0
+181,User_N_21,Saya tetap tenang dalam situasi yang menekan,0,0,0,0,0
+93,User_E_13,Saya senang dengan acara-acara yang ramai,0,0,1,0,0
+185,User_N_25,Saya confident dengan kemampuan untuk handle masalah,0,0,0,0,0
+48,User_C_8,Saya bekerja dengan standar kualitas yang tinggi,0,1,0,0,0
+91,User_E_11,Saya sering memimpin diskusi atau presentasi,0,0,1,0,0
+60,User_C_20,Saya selalu bertanggung jawab atas hasil kerja,0,1,0,0,0
+136,User_A_16,Saya selalu supportive terhadap ide dan usaha orang lain,0,0,0,1,0
+59,User_C_19,Saya sangat hati-hati dalam mengambil keputusan,0,1,0,0,0
+75,User_C_35,Saya sering mengubah rencana di tengah jalan,0,0,0,0,0
+82,User_E_2,Saya mudah memulai percakapan dengan orang baru,0,0,1,0,0
+103,User_E_23,Saya lebih nyaman mendengarkan daripada berbicara,0,0,0,0,0
+15,User_O_15,Saya gemar mencoba teknologi dan metode terbaru,1,0,0,0,0
+183,User_N_23,Saya tidak terlalu worry tentang hal-hal di luar kontrol,0,0,0,0,0
+51,User_C_11,Saya memiliki rutinitas harian yang terstruktur,0,1,0,0,0
+137,User_A_17,Saya suka memediasi konflik dan mencari solusi damai,0,0,0,1,0
+68,User_C_28,Saya kadang tidak konsisten dalam kualitas output,0,0,0,0,0
+13,User_O_13,Saya suka berpikir abstrak dan konseptual,1,0,0,0,0
+135,User_A_15,Saya mudah compromise dan mencari jalan tengah,0,0,0,1,0
+83,User_E_3,Saya merasa energik saat berada di kerumunan,0,0,1,0,0
+168,User_N_8,Saya sering merasa overwhelmed dengan tanggung jawab,0,0,0,0,1
+50,User_C_10,Saya selalu double-check hasil kerja sebelum diserahkan,0,1,0,0,0
+5,User_O_5,Saya gemar mengeksplorasi konsep-konsep yang unik,1,0,0,0,0
+163,User_N_3,Saya kadang overthinking tentang hal-hal kecil,0,0,0,0,1
+58,User_C_18,Saya membuat jadwal yang realistis dan mengikutinya,0,1,0,0,0
+152,User_A_32,Saya lebih pragmatic dalam approach problem solving,0,0,0,0,0
+43,User_C_3,Saya selalu mempersiapkan segala sesuatu dengan matang,0,1,0,0,0
+71,User_C_31,Saya kadang tidak backup data dengan baik,0,0,0,0,0
+70,User_C_30,Saya sering mengerjakan sesuatu secara spontan,0,0,0,0,0
+131,User_A_11,Saya mudah trusty dan percaya pada niat baik orang,0,0,0,1,0
+45,User_C_5,Saya selalu memeriksa detail pekerjaan sebelum submit,0,1,0,0,0
+88,User_E_8,Saya suka bekerja dalam tim dan kolaborasi,0,0,1,0,0
+11,User_O_11,Saya mudah terinspirasi oleh hal-hal di sekitar,1,0,0,0,0
+4,User_O_4,Saya mudah terbuka terhadap pengalaman baru,1,0,0,0,0
+86,User_E_6,Saya mudah berteman dan bergaul dengan siapa saja,0,0,1,0,0
+179,User_N_19,Saya mudah triggered oleh situasi yang unpredictable,0,0,0,0,1
+69,User_C_29,Saya tidak terlalu suka dengan rutinitas yang ketat,0,0,0,0,0
+9,User_O_9,Saya selalu ingin belajar keterampilan baru,1,0,0,0,0
+125,User_A_5,Saya senang berbagi dan memberikan support pada orang lain,0,0,0,1,0
+74,User_C_34,Saya kadang tidak menepati jadwal yang sudah dibuat,0,0,0,0,0
+12,User_O_12,Saya menikmati tantangan intelektual yang kompleks,1,0,0,0,0
+92,User_E_12,Saya mudah terbuka dan sharing dengan orang lain,0,0,1,0,0
+150,User_A_30,Saya lebih objective daripada emotional dalam decision making,0,0,0,0,0
+167,User_N_7,Saya kadang insecure tentang kemampuan diri,0,0,0,0,1
+8,User_O_8,"Saya tertarik pada seni, musik, dan budaya yang beragam",1,0,0,0,0
+42,User_C_2,Saya sangat terorganisir dalam mengatur jadwal,0,1,0,0,0
+65,User_C_25,Saya sering kehilangan dokumen atau file penting,0,0,0,0,0
+172,User_N_12,Saya sering merasa nervous sebelum presentasi,0,0,0,0,1
+66,User_C_26,Saya tidak terlalu suka membuat planning yang detail,0,0,0,0,0
+63,User_C_23,Saya sering lupa dengan appointment atau deadline,0,0,0,0,0
+176,User_N_16,Saya mudah terpengaruh oleh negative vibes,0,0,0,0,1
+147,User_A_27,Saya tidak terlalu suka mengalah dalam diskusi,0,0,0,0,0
+104,User_E_24,Saya tidak terlalu suka menjadi pusat perhatian,0,0,0,0,0
+107,User_E_27,Saya lebih suka komunikasi tertulis daripada verbal,0,0,0,0,0
+146,User_A_26,Saya lebih direct dan blunt dalam berkomunikasi,0,0,0,0,0
+40,User_O_40,Saya tidak terlalu suka dengan ketidakpastian,0,0,0,0,0
+53,User_C_13,Saya mengerjakan tugas step by step secara sistematis,0,1,0,0,0
+138,User_A_18,Saya peduli dengan community dan lingkungan sekitar,0,0,0,1,0
+182,User_N_22,Saya mudah bounce back dari kegagalan,0,0,0,0,0
+194,User_N_34,Saya secure dan confident dengan diri sendiri,0,0,0,0,0
+6,User_O_6,Saya menikmati diskusi tentang teori dan filosofi,1,0,0,0,0
+192,User_N_32,Saya resilient dan adaptable terhadap perubahan,0,0,0,0,0
+101,User_E_21,Saya lebih suka bekerja sendiri daripada dalam kelompok,0,0,0,0,0
+14,User_O_14,Saya selalu terbuka pada perspektif dan pandangan baru,1,0,0,0,0
+195,User_N_35,Saya tidak mudah moody atau emotional,0,0,0,0,0
+180,User_N_20,Saya kadang merasa helpless saat menghadapi challenge,0,0,0,0,1
+171,User_N_11,Saya sensitive terhadap perubahan lingkungan,0,0,0,0,1
+109,User_E_29,Saya lebih memilih gathering kecil daripada acara besar,0,0,0,0,0
+177,User_N_17,Saya kadang merasa tidak confident dengan performance,0,0,0,0,1
+80,User_C_40,Saya kadang tidak konsisten dalam follow-up,0,0,0,0,0
+161,User_N_1,Saya sering merasa khawatir tentang masa depan,0,0,0,0,1
+115,User_E_35,Saya tidak terlalu comfortable dengan spontaneous social event,0,0,0,0,0
+184,User_N_24,Saya stable secara emosional dalam berbagai situasi,0,0,0,0,0
+72,User_C_32,Saya tidak terlalu detail dalam dokumentasi,0,0,0,0,0
+200,User_N_40,Saya balanced dalam manage expectation dan reality,0,0,0,0,0
+32,User_O_32,Saya tidak terlalu suka diskusi yang terlalu abstrak,0,0,0,0,0
+129,User_A_9,Saya suka mendengarkan curhat dan memberikan advice,0,0,0,1,0
+190,User_N_30,Saya calm dan composed saat menghadapi konflik,0,0,0,0,0
+95,User_E_15,Saya mudah mengajak orang lain untuk berpartisipasi,0,0,1,0,0
+39,User_O_39,Saya lebih fokus pada hasil yang nyata dan terukur,0,0,0,0,0
+73,User_C_33,Saya sering multitasking tanpa fokus yang jelas,0,0,0,0,0
+110,User_E_30,Saya tidak terlalu aktif dalam media sosial,0,0,0,0,0
+153,User_A_33,Saya tidak terlalu concern dengan people pleasing,0,0,0,0,0
+143,User_A_23,Saya kadang skeptis terhadap motif orang lain,0,0,0,0,0
+113,User_E_33,Saya tidak terlalu suka dengan small talk atau basa-basi,0,0,0,0,0
+20,User_O_20,Saya menikmati aktivitas yang menantang kreativitas,1,0,0,0,0
+102,User_E_22,Saya butuh waktu untuk recharge setelah bersosialisasi,0,0,0,0,0
+122,User_A_2,Saya mudah berempati dengan perasaan orang lain,0,0,0,1,0
+114,User_E_34,Saya lebih memilih berkualitas daripada kuantitas dalam pertemanan,0,0,0,0,0
+85,User_E_5,Saya aktif dalam kegiatan sosial dan komunitas,0,0,1,0,0
+140,User_A_20,Saya selalu respectful dan menghargai pendapat orang lain,0,0,0,1,0
+188,User_N_28,Saya optimistic tentang outcome dan hasil,0,0,0,0,0
+116,User_E_36,Saya lebih suka mengekspresikan ide melalui tulisan,0,0,0,0,0
+23,User_O_23,Saya tidak terlalu tertarik mencoba hal-hal yang belum pernah,0,0,0,0,0
+112,User_E_32,Saya butuh me-time untuk menyendiri dan refleksi,0,0,0,0,0
+49,User_C_9,Saya membuat to-do list dan mengikutinya konsisten,0,1,0,0,0
+79,User_C_39,Saya tidak terlalu suka dengan administrative tasks,0,0,0,0,0
+119,User_E_39,Saya tidak terlalu suka dengan networking yang terlalu formal,0,0,0,0,0
+159,User_A_39,Saya tidak terlalu emotional dalam respond conflict,0,0,0,0,0
+154,User_A_34,Saya lebih straightforward dalam memberikan feedback,0,0,0,0,0
+170,User_N_10,Saya kadang pessimistic tentang outcome suatu hal,0,0,0,0,1
+120,User_E_40,Saya merasa lebih produktif saat bekerja dalam suasana tenang,0,0,0,0,0
+127,User_A_7,Saya selalu mencari solusi win-win dalam masalah,0,0,0,1,0
+158,User_A_38,Saya lebih assertive dalam memperjuangkan pendapat,0,0,0,0,0
+111,User_E_31,Saya lebih suka observasi daripada langsung berpartisipasi,0,0,0,0,0
+26,User_O_26,Saya lebih fokus pada hal-hal praktis daripada teoretis,0,0,0,0,0
+123,User_A_3,Saya suka berkolaborasi dan bekerja sama dalam tim,0,0,0,1,0
+106,User_E_26,Saya perlu waktu untuk membuka diri pada orang baru,0,0,0,0,0
+134,User_A_14,Saya senang volunteer dan membantu kegiatan sosial,0,0,0,1,0
+151,User_A_31,Saya tidak terlalu suka dengan social obligation,0,0,0,0,0
+67,User_C_27,Saya sering terburu-buru dalam menyelesaikan pekerjaan,0,0,0,0,0
+44,User_C_4,Saya disiplin dalam menjalankan komitmen,0,1,0,0,0
+89,User_E_9,Saya mudah mengekspresikan pendapat di depan umum,0,0,1,0,0
+1,User_O_1,Saya suka mencoba hal-hal baru dan eksperimen,1,0,0,0,0
+145,User_A_25,Saya tidak terlalu patient dengan kesalahan orang lain,0,0,0,0,0
+47,User_C_7,Saya selalu menepati janji dan deadline,0,1,0,0,0
+55,User_C_15,Saya memiliki planning yang detail untuk setiap project,0,1,0,0,0
+94,User_E_14,Saya aktif dalam media sosial dan komunikasi online,0,0,1,0,0
+24,User_O_24,Saya lebih memilih metode tradisional yang sudah teruji,0,0,0,0,0
+160,User_A_40,Saya lebih realistis daripada idealis dalam expectation,0,0,0,0,0
+139,User_A_19,Saya mudah melakukan teamwork dan koordinasi,0,0,0,1,0
+126,User_A_6,Saya mudah memaafkan kesalahan orang lain,0,0,0,1,0
+27,User_O_27,Saya tidak terlalu tertarik dengan seni dan budaya,0,0,0,0,0
+142,User_A_22,Saya tidak terlalu mudah percaya pada orang baru,0,0,0,0,0
+141,User_A_21,Saya lebih fokus pada kepentingan diri sendiri,0,0,0,0,0
+174,User_N_14,Saya kadang doubt terhadap keputusan yang sudah dibuat,0,0,0,0,1
+90,User_E_10,Saya enjoy dengan networking dan bertemu orang baru,0,0,1,0,0
+117,User_E_37,Saya membutuhkan preparation sebelum presentasi atau meeting,0,0,0,0,0
+57,User_C_17,Saya selalu review dan evaluasi hasil kerja,0,1,0,0,0
+105,User_E_25,Saya lebih memilih lingkungan yang tenang dan damai,0,0,0,0,0
+52,User_C_12,Saya selalu mencatat dan mendokumentasikan dengan baik,0,1,0,0,0
+193,User_N_33,Saya tidak overthinking tentang decision making,0,0,0,0,0
+124,User_A_4,Saya selalu berusaha menghindari konflik dengan orang lain,0,0,0,1,0
+121,User_A_1,Saya selalu siap membantu teman yang kesulitan,0,0,0,1,0
+16,User_O_16,Saya senang mengembangkan ide-ide original,1,0,0,0,0
+96,User_E_16,Saya senang dengan brainstorming session dalam kelompok,0,0,1,0,0
+97,User_E_17,Saya mudah beradaptasi dalam lingkungan sosial baru,0,0,1,0,0
+34,User_O_34,Saya kurang tertarik dengan ide-ide yang terlalu baru,0,0,0,0,0
+162,User_N_2,Saya mudah stress saat menghadapi deadline,0,0,0,0,1
+31,User_O_31,Saya lebih suka bekerja dengan cara yang sudah saya kuasai,0,0,0,0,0
+169,User_N_9,Saya mudah panik saat ada masalah mendadak,0,0,0,0,1
+19,User_O_19,Saya suka berkreasi dan membuat sesuatu yang unik,1,0,0,0,0
+78,User_C_38,Saya sering bekerja dengan deadline yang mepet,0,0,0,0,0
+38,User_O_38,Saya kurang tertarik dengan filosofi atau teori kompleks,0,0,0,0,0
+36,User_O_36,Saya tidak terlalu suka mengambil risiko dengan hal baru,0,0,0,0,0
+28,User_O_28,Saya lebih suka mengikuti prosedur yang sudah ada,0,0,0,0,0
+198,User_N_38,Saya steady dan consistent dalam performance,0,0,0,0,0
+2,User_O_2,Saya selalu tertarik dengan ide-ide kreatif dan inovatif,1,0,0,0,0
+61,User_C_21,Saya sering menunda-nunda pekerjaan sampai menit terakhir,0,0,0,0,0
+22,User_O_22,Saya merasa nyaman dengan cara-cara yang sudah terbukti,0,0,0,0,0
+100,User_E_20,Saya merasa nyaman berbicara di forum publik,0,0,1,0,0
+64,User_C_24,Saya kadang tidak teliti dalam mengerjakan tugas,0,0,0,0,0
+21,User_O_21,Saya lebih suka rutinitas yang sudah pasti dan terprediksi,0,0,0,0,0
+132,User_A_12,Saya suka memberikan compliment dan appreciation,0,0,0,1,0
+76,User_C_36,Saya tidak terlalu suka dengan sistem yang terlalu rigid,0,0,0,0,0
+164,User_N_4,Saya sensitive terhadap kritik dan feedback negatif,0,0,0,0,1
+189,User_N_29,Saya tidak terlalu sensitive terhadap kritik,0,0,0,0,0
+18,User_O_18,Saya tertarik mengeksplorasi budaya dan tradisi berbeda,1,0,0,0,0
+30,User_O_30,Saya tidak begitu suka bereksperimen atau mencoba-coba,0,0,0,0,0
+199,User_N_39,Saya tidak terlalu concern dengan judgment orang lain,0,0,0,0,0
+3,User_O_3,Saya senang berimajinasi dan berpikir out of the box,1,0,0,0,0
+54,User_C_14,Saya selalu backup data dan file penting,0,1,0,0,0
+197,User_N_37,Saya tidak mudah frustrated dengan obstacle,0,0,0,0,0
+196,User_N_36,Saya peaceful dan content dengan current situation,0,0,0,0,0
+148,User_A_28,Saya lebih memilih bekerja independent,0,0,0,0,0
+156,User_A_36,Saya lebih focus pada result daripada process relationship,0,0,0,0,0
+186,User_N_26,Saya tidak mudah stressed oleh deadline atau pressure,0,0,0,0,0
+7,User_O_7,Saya sering mencari solusi alternatif untuk masalah,1,0,0,0,0
+25,User_O_25,Saya kurang suka dengan perubahan yang mendadak,0,0,0,0,0
+17,User_O_17,Saya mudah beradaptasi dengan perubahan,1,0,0,0,0
