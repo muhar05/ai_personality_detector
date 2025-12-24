@@ -12,6 +12,18 @@ Sistem ini merupakan aplikasi berbasis AI yang menganalisis pola komunikasi perc
 - **Antarmuka Web**: Upload file chat dan dapatkan hasil analisis secara interaktif.
 - **Visualisasi hasil**: Radar chart OCEAN pada web.
 
+## Arsitektur Sistem
+
+Untuk memahami arsitektur sistem secara detail, termasuk diagram komponen dan alur proses, silakan lihat:
+
+📖 **[Dokumentasi Arsitektur](docs/ARCHITECTURE.md)**
+
+Dokumentasi tersebut mencakup:
+- Diagram arsitektur tingkat tinggi
+- Sequence diagram endpoint `/analyze`
+- Penjelasan setiap komponen sistem
+- Catatan teknis dan rekomendasi deployment
+
 ## Struktur Folder
 
 ```
